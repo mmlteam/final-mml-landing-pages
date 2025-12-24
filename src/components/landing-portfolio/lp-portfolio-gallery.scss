@@ -1,0 +1,212 @@
+@import "../../styles/mixins";
+
+/* ================================
+   MAIN WRAPPER
+================================ */
+.portfolio-main-wrapper {
+  margin: 0 2em;
+
+  @include respond-until(sm) {
+    margin: 0;
+  }
+}
+
+/* ================================
+   GRID WRAP
+================================ */
+.portfolio-list-wrap {
+  margin-top: 40px;
+}
+
+/* space between cards (ROW GAP FIX) */
+.portfolio-list-wrap > div {
+  margin-bottom: 40px;
+}
+
+/* ================================
+   CARD
+================================ */
+.portfolio-card {
+  display: block;
+  background: #ffffff;
+  border-radius: 28px;
+  overflow: hidden;
+  text-decoration: none;
+  height: 100%;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  transition: all 0.35s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* ================================
+   IMAGE HEADER WITH OVERLAY
+================================ */
+.portfolio-card-top {
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  border-radius: 28px 28px 0 0;
+  overflow: hidden;
+
+  /* OVERLAY */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.25),
+      rgba(0, 0, 0, 0.7)
+    );
+    z-index: 1;
+    transition: background 0.3s ease;
+  }
+
+  /* TITLE */
+  h3 {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    text-align: center;
+    padding: 0 18px;
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+  }
+}
+
+/* overlay light on hover */
+.portfolio-card:hover .portfolio-card-top::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.6)
+  );
+}
+
+/* ================================
+   CARD BODY
+================================ */
+.portfolio-card-body {
+  padding: 26px 26px 30px;
+
+  h4 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0089c7;
+    margin-bottom: 6px;
+  }
+
+  .portfolio-category {
+    font-size: 14px;
+    font-weight: 600;
+    color: #7ac943;
+    margin-bottom: 22px;
+  }
+}
+
+/* ================================
+   DIVIDER
+================================ */
+.portfolio-card-body::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: #eeeeee;
+  margin: 20px 0;
+}
+
+/* ================================
+   STATS
+================================ */
+.portfolio-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  div {
+    text-align: center;
+
+    strong {
+      display: block;
+      font-size: 20px;
+      font-weight: 700;
+      color: #7ac943;
+      margin-bottom: 4px;
+    }
+
+    span {
+      font-size: 13px;
+      color: #666666;
+    }
+  }
+}
+
+/* ================================
+   LOAD MORE BUTTON
+================================ */
+.portfolio-loadmore {
+  text-align: center;
+  padding: 50px 0 20px;
+
+  button {
+    padding: 14px 36px;
+    border-radius: 30px;
+    border: none;
+    background: #0089c7;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #006fa3;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+@include respond-until(sm) {
+  .portfolio-card-top {
+    height: 190px;
+  }
+
+  .portfolio-card-body h4 {
+    font-size: 20px;
+  }
+
+  .portfolio-stats strong {
+    font-size: 18px;
+  }
+
+  /* ================================
+   LOAD MORE ANIMATION
+================================ */
+  .portfolio-item {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+    animation: portfolioFadeUp 0.6s ease forwards;
+  }
+
+  /* Smooth fade + slide */
+  @keyframes portfolioFadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}

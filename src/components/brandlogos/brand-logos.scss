@@ -1,0 +1,58 @@
+@import "../../styles/mixins";
+// logo grid section css start
+.trusted-section {
+  position: relative;
+  padding: 4rem 0rem;
+  background: radial-gradient(
+      60% 40% at 50% 0%,
+      rgba(0, 180, 216, 0.08),
+      transparent 60%
+    ),
+    #ffffff;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* GRID */
+.logo-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 2.5rem;
+  align-items: center;
+  @include respond-until(sm) {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 2fr));
+    gap: 1.5rem;
+    max-width: 100%;
+  }
+}
+
+/* LOGO CARD */
+.logo-item {
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  transition: all 0.35s ease;
+
+  img {
+    max-height: 60px;
+    max-width: 140px;
+    object-fit: cover;
+    opacity: 1;
+    transition: all 0.35s ease;
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    border-color: transparent;
+    border: 2px solid #00b4d8;
+  }
+}
+
+// logo grid section css end
