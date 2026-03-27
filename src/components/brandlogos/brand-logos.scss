@@ -11,6 +11,9 @@
     #ffffff;
   overflow: hidden;
   text-align: center;
+  @include respond-until(sm) {
+    padding: 2rem 0rem;
+  }
 }
 
 /* GRID */
@@ -23,8 +26,9 @@
   align-items: center;
   @include respond-until(sm) {
     grid-template-columns: repeat(auto-fit, minmax(140px, 2fr));
-    gap: 1.5rem;
+    gap: 1rem;
     max-width: 100%;
+    margin: 0 20px;
   }
 }
 

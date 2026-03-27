@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import FormField from "./FormField";
 import axios from "axios";
 import "./contactform.scss";
+
 const LandingContactForm = () => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
   const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
-  const [company, setCompany] = useState("");
   const [budget, setBudget] = useState("");
   const [phone, setPhone] = useState("");
-  const [projectDetails, setProjectDetails] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
+
   const [loader, setLoader] = useState(false);
   const [thankyoumsg, setThankyoumsg] = useState("");
+
   const [fnameValidate, setFnameValidate] = useState(false);
-  const [emailValidate, setEmailValidate] = useState(false);
   const [phoneValidate, setPhoneValidate] = useState(false);
   const [budgetValidate, setBudgetValidate] = useState(false);
 
-  const [projectDetailsValidate, setProjectDetailsValidate] = useState(false);
   const [formValid, setFormValid] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState({});
   const [buttonText, setButtonText] = useState("Get My Free Consultation →");
   const [buttonClass, setButtonClass] = useState("");
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const budgetOptions = [
     { value: "50k-1l", label: "₹50,000 - ₹1,00,000" },
@@ -31,61 +30,51 @@ const LandingContactForm = () => {
     { value: "above5l", label: "Above ₹5,00,000" },
     { value: "discuss", label: "I need to discuss my requirements" },
   ];
+
   const validateUsername = (fname) => {
-    let errorMsgCaret = { ...errorMsg };
-    if (fname.length === 0) {
+    const errorMsgCaret = { ...errorMsg };
+
+    if (fname.trim().length === 0) {
       setFnameValidate(true);
       errorMsgCaret.fname = "Please enter your name";
     } else {
       setFnameValidate(false);
+      errorMsgCaret.fname = "";
     }
-    setErrorMsg(errorMsgCaret);
-  };
 
-  const validateProjectDetails = (project) => {
-    let errorMsgCaret = { ...errorMsg };
-    if (project.length === 0) {
-      setProjectDetailsValidate(true);
-      errorMsgCaret.project =
-        "Please enter your project details or just say hi :)";
-    } else {
-      setProjectDetailsValidate(false);
-    }
     setErrorMsg(errorMsgCaret);
   };
 
   const validateBudget = (value) => {
-    let errorMsgCaret = { ...errorMsg };
+    const errorMsgCaret = { ...errorMsg };
+
     if (value.length === 0) {
       setBudgetValidate(true);
       errorMsgCaret.budget = "Please select your budget range";
     } else {
       setBudgetValidate(false);
+      errorMsgCaret.budget = "";
     }
+
     setErrorMsg(errorMsgCaret);
   };
 
-  const validateUserEmail = (email) => {
-    let errorMsgCaret = { ...errorMsg };
-    // checks for format _@_._
-    if (email.length === 0 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setEmailValidate(true);
-      errorMsgCaret.email = "Invalid email format";
-    } else {
-      setEmailValidate(false);
-    }
-    setErrorMsg(errorMsgCaret);
-  };
+  const validateUserPhone = (value) => {
+    const errorMsgCaret = { ...errorMsg };
+    const cleanedValue = String(value).trim();
+    const rule = /^\d{10,15}$/;
 
-  const validateUserPhone = (phone) => {
-    let rule = /^\d+$/;
-    let errorMsgCaret = { ...errorMsg };
-    if (!phone.match(rule)) {
+    if (cleanedValue.length === 0) {
       setPhoneValidate(true);
-      errorMsgCaret.phone = "Invalid phone format ";
+      errorMsgCaret.phone = "Please enter your contact number";
+    } else if (!rule.test(cleanedValue)) {
+      setPhoneValidate(true);
+      errorMsgCaret.phone = "Please enter a valid contact number";
     } else {
       setPhoneValidate(false);
+      errorMsgCaret.phone = "";
     }
+
     setErrorMsg(errorMsgCaret);
   };
 
@@ -94,126 +83,111 @@ const LandingContactForm = () => {
     validateUsername(fname);
   };
 
-  const updateUserEmail = (email) => {
-    setEmail(email);
-    validateUserEmail(email);
-  };
-
   const updateUserBudget = (value) => {
     setBudget(value);
     validateBudget(value);
   };
 
-  const updateUserCompany = (company) => {
-    setCompany(company);
+  const updateUserPhone = (value) => {
+    setPhone(value);
+    validateUserPhone(value);
   };
 
-  const updateUserProjectDetails = (project) => {
-    setProjectDetails(project);
-    validateProjectDetails(project);
-  };
-
-  const updateUserPhone = (phone) => {
-    setPhone(phone);
-    validateUserPhone(phone);
-  };
   const resetForm = () => {
     setFirstName("");
-    setEmail("");
-    setCompany("");
+    setBudget("");
     setPhone("");
+    setFnameValidate(false);
+    setPhoneValidate(false);
+    setBudgetValidate(false);
+    setErrorMsg({});
+
     setTimeout(() => {
-      setButtonText("Submit");
+      setButtonText("Get My Free Consultation →");
       setButtonClass("");
+      setThankyoumsg("");
     }, 5000);
   };
 
   useEffect(() => {
     if (
-      email.length === 0 ||
-      firstName.length === 0 ||
-      phone.length === 0 ||
+      firstName.trim().length === 0 ||
+      phone.trim().length === 0 ||
       budget.length === 0
     ) {
       setFormValid(true);
-    } else if (
-      fnameValidate ||
-      emailValidate ||
-      phoneValidate ||
-      budgetValidate
-    ) {
+    } else if (fnameValidate || phoneValidate || budgetValidate) {
       setFormValid(true);
     } else {
       setFormValid(false);
     }
-  }, [
-    fnameValidate,
-    emailValidate,
-    phoneValidate,
-    budgetValidate,
-    phone,
-    email,
-    firstName,
-    budget,
-  ]);
+  }, [firstName, phone, budget, fnameValidate, phoneValidate, budgetValidate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formValid || loader) return;
+
     try {
-      if (!formValid) {
-        setLoader(true);
-        setButtonText("Submitting...");
-        setButtonClass("loading");
-        const data = {
-          fname: firstName,
-          email: email,
-          message: company,
-          phone: phone,
-          page: "contact",
-        };
-        axios
-          .all([
-            axios.post("/sendmail", {
-              timeout: 2000,
-              data: {
-                fname: firstName,
-                email: email,
-                message: company,
-                phone: phone,
-                checkbox: isChecked,
-                page: "contact",
-              },
-            }),
-            axios.post("https://api.mmlprojects.in/formdata.php", data, {
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-              },
-            }),
-          ])
-          .then(
-            axios.spread((response1, response2) => {
-              // output of req.
-              // console.log('data1', response1, 'data2', response2)
-              if (response1.status) {
-                setLoader(false);
-                setThankyoumsg("Message Sent.");
-                setButtonText("Message Sent. We will reply you soon!");
-                setButtonClass("sent-msg");
-                resetForm();
-              } else if (!response1.status) {
-                setLoader(true);
-                setThankyoumsg("");
-                setButtonText("something went wrong. sorry!");
-                setButtonClass("");
-                setFormValid(true);
-                resetForm();
-              }
-              //console.log('formphp==',response2);
-            })
-          );
+      setLoader(true);
+      setButtonText("Submitting...");
+      setButtonClass("loading");
+      if (!executeRecaptcha) {
+        throw new Error("reCAPTCHA not ready");
+      }
+      const recaptchaToken = await executeRecaptcha("contact_form");
+
+      const data = {
+        fname: firstName,
+        email: "",
+        message: `Budget: ${budget}`,
+        phone: phone,
+        page: "contact",
+        budget: budget,
+        recaptchaToken: recaptchaToken,
+        recaptchaAction: "contact_form",
+      };
+
+      const [response1, response2] = await axios.all([
+        axios.post("/sendmail", {
+          timeout: 2000,
+          data: {
+            fname: firstName,
+            email: "",
+            message: `Budget: ${budget}`,
+            phone: phone,
+            checkbox: false,
+            page: "contact",
+            budget: budget,
+            recaptchaToken: recaptchaToken,
+            recaptchaAction: "contact_form",
+          },
+        }),
+        axios.post("https://api.mmlprojects.in/formdata.php", data, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }),
+      ]);
+
+      if (response1.status) {
+        setLoader(false);
+        setThankyoumsg("Message Sent.");
+        setButtonText("Message Sent. We will reply you soon!");
+        setButtonClass("sent-msg");
+        resetForm();
+      } else {
+        setLoader(false);
+        setThankyoumsg("");
+        setButtonText("Something went wrong. Sorry!");
+        setButtonClass("");
       }
     } catch (error) {
       console.log(error);
+      setLoader(false);
+      setThankyoumsg("");
+      setButtonText("Something went wrong. Sorry!");
+      setButtonClass("");
     }
   };
 
@@ -235,64 +209,24 @@ const LandingContactForm = () => {
           fieldFn={updateUsername}
           textAreaField={false}
         />
-        {fnameValidate && <div className="error">{errorMsg.fname}</div>}
-        {/* <FormField
-            label="Last Name"
-            value={lastName}
-            fieldName="lastName"
-            type="text"
-            className="field"
-            fieldFn={updateLastname}
-            textAreaField={false}
-          />
-          {lnameValidate && <div className="error">{errorMsg.lname}</div>} */}
-        {/* <FormField
-            // label="Your Email"
-            value={email}
-            fieldName="email"
-            type="text"
-            className="field"
-            placeholder="Your Email *"
-            fieldFn={updateUserEmail}
-            textAreaField={false}
-          />
-          {emailValidate && <div className="error">{errorMsg.email}</div>} */}
-
-        {/* <FormField
-            label="Project Details"
-            value={projectDetails}
-            fieldName="project"
-            type="text"
-            className="field"
-            placeholder="Company / Website"
-            fieldFn={updateUserProjectDetails}
-          /> */}
-        {/* {projectDetailsValidate && (
-            <div className="error">{errorMsg.project}</div>
-          )} */}
+        {fnameValidate && errorMsg.fname && (
+          <div className="error">{errorMsg.fname}</div>
+        )}
 
         <FormField
-          label="WhatsApp Number *"
+          label="Your Contact Number *"
           value={phone}
           fieldName="phone"
-          type="text"
+          type="number"
           className="field"
-          placeholder="+91 Your number"
+          placeholder="Enter your contact number"
           fieldFn={updateUserPhone}
           textAreaField={false}
         />
-        {phoneValidate && <div className="error">{errorMsg.phone}</div>}
+        {phoneValidate && errorMsg.phone && (
+          <div className="error">{errorMsg.phone}</div>
+        )}
 
-        {/* <FormField
-            label="Address"
-            value={address}
-            fieldName="address"
-            type="text"
-            className="field"
-            fieldFn={updateAddress}
-            textAreaField={false}
-          />
-          {addressValidate && <div className="error">{errorMsg.address}</div>} */}
         <FormField
           label="Your Budget Range *"
           value={budget}
@@ -303,31 +237,25 @@ const LandingContactForm = () => {
           options={budgetOptions}
           fieldFn={updateUserBudget}
         />
+        {budgetValidate && errorMsg.budget && (
+          <div className="error">{errorMsg.budget}</div>
+        )}
 
-        {budgetValidate && <div className="error">{errorMsg.budget}</div>}
-
-        {/* <FormField
-            // label="Message"
-            value={company}
-            fieldName="company"
-            type="text"
-            className="field"
-            placeholder="What do you need? *"
-            fieldFn={updateUserCompany}
-            textAreaField={true}
-          /> */}
         <button
           type="submit"
           className={`submit-button ${buttonClass}`}
-          disabled={formValid}
+          disabled={formValid || loader}
         >
-          {buttonText}
+          {loader ? "Submitting..." : buttonText}
         </button>
+
+        {thankyoumsg && <div className="success-message">{thankyoumsg}</div>}
       </form>
-      <div class="form-trust">
-        <div class="form-trust-item">Free 30-minute strategy call</div>
-        <div class="form-trust-item">Custom quote within 24 hours</div>
-        <div class="form-trust-item">Quick response Mon-Fri</div>
+
+      <div className="form-trust">
+        <div className="form-trust-item">Free 30-minute strategy call</div>
+        <div className="form-trust-item">Custom quote within 24 hours</div>
+        <div className="form-trust-item">Quick response Mon-Sat</div>
       </div>
     </div>
   );

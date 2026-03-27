@@ -6,44 +6,29 @@ const FAQ = () => {
 
   const items = [
     {
-      q: "What's your minimum project budget?",
+      q: "Can I migrate my existing e-commerce store to Shopify?",
       a:
-        "Our minimum project budget is ₹50,000. This ensures we can deliver a quality website with proper design, development, testing, and support. For smaller budgets, we can recommend alternative solutions or phased approaches to fit your needs.",
+        "Migrating an existing store to Shopify can be a complex process, especially depending on the platform, data structure, and custom features involved. At Makemelive Technologies, we assess the scope carefully and provide tailored migration solutions to ensure a smooth and secure transition.",
     },
     {
-      q: "How much does website development cost?",
+      q: "How long does it take to develop a Shopify website?",
       a:
-        "Project costs vary based on complexity, features, and requirements. Most projects range from ₹50,000 to ₹5,00,000+. Final pricing depends on your specific scope—number of pages, custom features, integrations, e-commerce functionality, etc. Schedule a free consultation for a detailed custom quote based on your exact needs.",
+        "A basic Shopify store can be developed in 5–10 days, while custom or advanced stores may take 2–6 weeks. Timelines depend on design complexity and required integrations.",
     },
     {
-      q: "How do you decide which technology to use?",
+      q: " What about security and payment gateways supported by Shopify?",
       a:
-        "We analyze your business requirements, budget, timeline, and long-term goals. We're platform-agnostic—we recommend what's best for YOU, not what's easiest for us. Whether it's WordPress, Shopify, React, custom development, or another solution entirely—we'll guide you to the right choice.",
+        "Shopify offers enterprise-level security with SSL and PCI compliance. It supports multiple payment gateways like Razorpay, PayU, Stripe, PayPal, and UPI for seamless transactions.",
     },
     {
-      q: "How long does website development take?",
+      q: "Is Shopify suitable for small businesses?",
       a:
-        "Most projects are completed in 6–8 weeks from kickoff to launch. This includes design, development, revisions, and testing. Timeline can vary based on project complexity and how quickly you provide feedback. Rush projects can be accommodated with additional resources.",
+        "Yes, Shopify is ideal for small businesses due to its ease of use, affordability, and scalability. It allows you to start small and grow without technical challenges.",
     },
     {
-      q: "Will I be able to update the website myself?",
+      q: "Why Choose Makemelive Technologies For Shopify?",
       a:
-        "Yes! We provide comprehensive training on managing your website. You'll be able to update content, images, add blog posts, and manage basic settings. We also offer ongoing maintenance packages if you prefer hands-off management.",
-    },
-    {
-      q: "Do you provide hosting and domain services?",
-      a:
-        "Yes, we handle domain registration, premium hosting setup, SSL certificates, and email setup. Or if you have existing hosting, we can work with your current setup. Full flexibility based on your preference.",
-    },
-    {
-      q: "What happens after the website launches?",
-      a:
-        "You get 30 days of free post-launch support for bug fixes, minor adjustments, and questions. After that, we offer monthly maintenance plans starting from ₹2,500/month which include updates, backups, security monitoring, and ongoing support.",
-    },
-    {
-      q: "What if my project requires more features mid-development?",
-      a:
-        "We understand requirements can evolve. We'll provide a clear scope at the start, and if you need additional features, we'll give you a separate quote for the extra work. Budget adjustments are based on the complexity and time required for the new features.",
+        "We provide custom, conversion-focused Shopify solutions with expert development, fast delivery, and ongoing support. Our goal is to build stores that not only look great but also drive sales.",
     },
   ];
 

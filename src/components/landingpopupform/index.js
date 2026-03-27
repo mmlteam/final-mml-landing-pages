@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import FormField from "./FormField";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import axios from "axios";
 import "./audit-popup-form.scss";
 
@@ -12,7 +13,7 @@ const AuditPopupForm = () => {
 
   const [loading, setLoading] = useState(false);
   const [buttonText, setButtonText] = useState(
-    "Book My Free Audit + Consultation →"
+    "Book My Free Audit + Consultation →",
   );
 
   const validateName = (value) => {
@@ -21,30 +22,46 @@ const AuditPopupForm = () => {
   };
 
   const validatePhone = (value) => {
+    const cleanedValue = String(value).trim();
     const rule = /^\d{10}$/;
-    setPhone(value);
-    setPhoneError(!rule.test(value));
+    setPhone(cleanedValue);
+    setPhoneError(!rule.test(cleanedValue));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !phone || nameError || phoneError) return;
+    if (!name.trim() || !phone.trim() || nameError || phoneError) return;
 
     try {
       setLoading(true);
       setButtonText("Submitting...");
 
-      await axios.post("/sendmail", {
-        fname: name,
-        phone: phone,
-        page: "audit-popup",
+      const response = await axios.post("/sendmail", {
+        timeout: 2000,
+        data: {
+          fname: name,
+          email: "",
+          message: "Audit popup lead",
+          phone: phone,
+          checkbox: false,
+          page: "audit-popup",
+          budget: "",
+        },
       });
+
+      console.log("sendmail response:", response.data);
 
       setButtonText("Submitted Successfully ✅");
       setName("");
       setPhone("");
+      setNameError(false);
+      setPhoneError(false);
     } catch (err) {
+      console.error(
+        "sendmail error:",
+        err.response?.data || err.message || err,
+      );
       setButtonText("Something went wrong");
     } finally {
       setLoading(false);
@@ -65,12 +82,12 @@ const AuditPopupForm = () => {
       {nameError && <div className="error">Please enter your name</div>}
 
       <FormField
-        label="WhatsApp Number *"
+        label="Your Contact Number *"
         value={phone}
         fieldName="phone"
-        type="text"
+        type="number"
         className="field field--compact"
-        placeholder="+91 Your number"
+        placeholder="Enter your contact number"
         fieldFn={validatePhone}
       />
       {phoneError && <div className="error">Enter valid 10 digit number</div>}

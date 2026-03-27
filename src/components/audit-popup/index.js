@@ -3,23 +3,43 @@ import "./audit-popup.scss";
 import AuditPopupForm from "../landingpopupform";
 
 export default function AuditPopup() {
-  const [open, setOpen] = useState(false);
-  const [manuallyClosed, setManuallyClosed] = useState(false);
+  const SESSION_KEY = "auditPopupDismissed";
 
-  // 1️⃣ Auto open after 5 seconds (first load only)
+  const [open, setOpen] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+
+  // sessionStorage se check
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const alreadyDismissed = sessionStorage.getItem(SESSION_KEY) === "true";
+      if (alreadyDismissed) {
+        setDismissed(true);
+      }
+    }
+  }, []);
+
+  // 1) Auto open after 35 sec
+  useEffect(() => {
+    if (dismissed) return;
+
     const timer = setTimeout(() => {
-      setOpen(true);
+      if (!dismissed) {
+        setOpen(true);
+      }
     }, 5000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [dismissed]);
 
-  // 2️⃣ Exit intent — MULTIPLE TIMES allowed
+  // 2) Exit intent
   useEffect(() => {
-    if (!manuallyClosed) return;
+    if (dismissed) return;
 
     const handleExitIntent = (e) => {
+      // agar user already dismiss kar chuka hai to kuch mat karo
+      if (dismissed) return;
+
+      // only top exit intent
       if (e.clientY <= 0) {
         setOpen(true);
       }
@@ -30,11 +50,15 @@ export default function AuditPopup() {
     return () => {
       document.removeEventListener("mouseleave", handleExitIntent);
     };
-  }, [manuallyClosed]);
+  }, [dismissed]);
 
   const handleClose = () => {
     setOpen(false);
-    setManuallyClosed(true);
+    setDismissed(true);
+
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem(SESSION_KEY, "true");
+    }
   };
 
   if (!open) return null;
@@ -42,12 +66,10 @@ export default function AuditPopup() {
   return (
     <div className="audit-popup-overlay" onClick={handleClose}>
       <div className="audit-popup" onClick={(e) => e.stopPropagation()}>
-        {/* CLOSE */}
-        <button className="popup-close" onClick={handleClose}>
+        <button className="popup-close" onClick={handleClose} type="button">
           ×
         </button>
 
-        {/* CONTENT */}
         <div className="popup-tag">⚡ WAIT! BEFORE YOU GO...</div>
 
         <h2>
@@ -56,7 +78,8 @@ export default function AuditPopup() {
         </h2>
 
         <p className="popup-desc">
-          We'll analyze your website and show exactly what to fix—no pressure.
+          We&apos;ll analyze your website and show exactly what to fix—no
+          pressure.
         </p>
 
         <div className="popup-benefits">

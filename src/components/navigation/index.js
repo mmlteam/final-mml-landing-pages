@@ -16,7 +16,7 @@ export default function Navigation() {
         </div>
 
         <div className="phone-wrap-menu">
-          <a className="phone-icon-menu" href="tel:+919167352347">
+          <a className="phone-icon-menu" href="tel:+9136651479">
             <FaPhoneAlt fill="#fff" />
           </a>
         </div>

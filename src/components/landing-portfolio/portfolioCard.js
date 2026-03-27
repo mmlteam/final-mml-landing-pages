@@ -1,4 +1,5 @@
 import React from "react";
+import { GoArrowUpRight } from "react-icons/go";
 
 export default function PortfolioCard({ portGrid }) {
   return (
@@ -9,9 +10,12 @@ export default function PortfolioCard({ portGrid }) {
           work_portfilio_title,
           work_portfilio_portlink,
           work_portfilio_portfolioimage,
+          work_portfolio_category,
+          work_portfolio_desc,
+          work_portfolio_badge,
         } = item;
 
-        const bgImage = `https://api.mmlprojects.in/images/work/${work_portfilio_portfolioimage}`;
+        const bgImage = `/images/work/${work_portfilio_portfolioimage}`;
 
         return (
           <div
@@ -28,23 +32,23 @@ export default function PortfolioCard({ portGrid }) {
               <div
                 className="portfolio-card-top"
                 style={{ backgroundImage: `url(${bgImage})` }}
-              >
-                <h3>{work_portfilio_title}</h3>
-              </div>
+              ></div>
 
               <div className="portfolio-card-body">
-                <h4>{work_portfilio_title}</h4>
-                <p className="portfolio-category">AI / SaaS Platform</p>
+                <div className="portfolio-card-head">
+                  <h4 className="portfolio-title">{work_portfilio_title}</h4>
+                </div>
 
-                <div className="portfolio-stats">
-                  <div>
-                    <strong>15K+</strong>
-                    <span>Monthly Users</span>
-                  </div>
-                  <div>
-                    <strong>4.8★</strong>
-                    <span>Rating</span>
-                  </div>
+                <p className="portfolio-description">
+                  {work_portfolio_desc ||
+                    "A comprehensive platform for marketing analytics and automation."}
+                </p>
+
+                <div className="portfolio-visit-btn">
+                  <span>Visit Website</span>
+                  <span className="arrow">
+                    <GoArrowUpRight />
+                  </span>
                 </div>
               </div>
             </a>

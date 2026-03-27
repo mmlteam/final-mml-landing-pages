@@ -33,7 +33,7 @@ const GoogleRatingButton = () => {
           {/* MIDDLE: score + reviews */}
           <div className="ratingRow__scoreBlock">
             <div className="ratingRow__scoreLine">
-              <span className="ratingRow__scoreValue">4.7</span>
+              <span className="ratingRow__scoreValue">5</span>
               <span className="ratingRow__scoreOutof">/5</span>
             </div>
             {/* <div className="ratingRow__reviewsText">

@@ -46,7 +46,7 @@
    IMAGE HEADER WITH OVERLAY
 ================================ */
 .portfolio-card-top {
-  height: 220px;
+  height: 300px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -118,13 +118,13 @@
 /* ================================
    DIVIDER
 ================================ */
-.portfolio-card-body::after {
-  content: "";
-  display: block;
-  height: 1px;
-  background: #eeeeee;
-  margin: 20px 0;
-}
+// .portfolio-card-body::after {
+//   content: "";
+//   display: block;
+//   height: 1px;
+//   background: #eeeeee;
+//   margin: 20px 0;
+// }
 
 /* ================================
    STATS
@@ -157,7 +157,6 @@
 ================================ */
 .portfolio-loadmore {
   text-align: center;
-  padding: 50px 0 20px;
 
   button {
     padding: 14px 36px;
@@ -177,6 +176,11 @@
   }
 }
 
+#portfolio,
+.portfolio-section-anchor {
+  scroll-margin-top: 120px;
+}
+
 /* ================================
    RESPONSIVE
 ================================ */
@@ -187,6 +191,8 @@
 
   .portfolio-card-body h4 {
     font-size: 20px;
+    text-align: center;
+    margin: 0 auto;
   }
 
   .portfolio-stats strong {
@@ -208,5 +214,188 @@
       opacity: 1;
       transform: translateY(0) scale(1);
     }
+  }
+}
+
+// mujahid css new
+.portfolio-list-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.portfolio-item {
+  margin-bottom: 30px;
+}
+
+.portfolio-card {
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.portfolio-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-card-top {
+  height: 300px;
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+}
+
+.portfolio-card-body {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.portfolio-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+}
+
+.portfolio-title {
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 700;
+  color: #111111;
+  margin: 0;
+  flex: 1;
+}
+
+.portfolio-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: #8fc54d;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.portfolio-pill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #f4f4f4;
+  color: #222222;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.portfolio-description {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #444444;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.portfolio-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  border: 1px solid #dddddd;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #222222;
+  background: #ffffff;
+}
+
+.portfolio-visit-btn {
+  margin-top: 6px;
+  width: 100%;
+  min-height: 54px;
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #111111;
+  font-size: 22px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.portfolio-visit-btn:hover {
+  background: #8fc54d;
+  color: #ffffff;
+  border-color: #111111;
+  text-decoration: none;
+}
+
+.portfolio-visit-btn .arrow {
+  font-size: 22px;
+  line-height: 0;
+}
+
+@media (max-width: 991px) {
+  .portfolio-title {
+    font-size: 24px;
+  }
+
+  .portfolio-card-top {
+    height: 200px;
+  }
+
+  .portfolio-visit-btn {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 767px) {
+  .portfolio-card-body {
+    padding: 18px;
+  }
+
+  .portfolio-card-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .portfolio-title {
+    font-size: 22px;
+  }
+
+  .portfolio-description {
+    font-size: 15px;
+  }
+
+  .portfolio-card-top {
+    height: 180px;
+  }
+
+  .portfolio-visit-btn {
+    min-height: 50px;
+    font-size: 17px;
   }
 }

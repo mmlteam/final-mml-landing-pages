@@ -48,7 +48,7 @@ export default function MenuItem() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaPhoneAlt fill="#fff" /> +91 91673 52347
+              <FaPhoneAlt fill="#fff" /> 9136651479
             </a>
           </li>
           <li className="header-button">
