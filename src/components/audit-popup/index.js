@@ -26,7 +26,7 @@ export default function AuditPopup() {
       if (!dismissed) {
         setOpen(true);
       }
-    }, 5000);
+    }, 35000);
 
     return () => clearTimeout(timer);
   }, [dismissed]);

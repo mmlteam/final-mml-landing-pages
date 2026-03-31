@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from "react";
-import LandingPortfolio from "../../components/landing-portfolio";
-import LPClientTestimonials from "../../components/lp-client-testimonials";
-import LandingContactForm from "../../components/landingcontactform";
-import LpContactForm from "../../components/lp-contact-form-top";
-import { imagePath } from "../../utils/assetUtils";
-import AuditPopup from "../../components/audit-popup";
+import LandingPortfolio from "../components/landing-portfolio";
+import LPClientTestimonials from "../components/lp-client-testimonials";
+import LandingContactForm from "../components/landingcontactform";
+import LpContactForm from "../components/lp-contact-form-top";
+import { imagePath } from "../utils/assetUtils";
+import AuditPopup from "../components/audit-popup";
 import { FaPhoneAlt } from "react-icons/fa";
 import { CiMail } from "react-icons/ci";
 import { BiConversation } from "react-icons/bi";
 import { FaPeopleArrows } from "react-icons/fa";
-import PageAnimWrapper from "../../components/pagetransition";
-import { gethome_brands_data } from "../../api/api";
-import Head from "../Head";
-import CountUp from "../../components/countup/contup";
-import ScrollToTop from "../../components/scroll-to-top";
-import BrandLogosGrid from "../../components/brandlogos";
-import TechnologiesWorkGrid from "../../components/technologies-work";
+import { BiMailSend } from "react-icons/bi";
+import PageAnimWrapper from "../components/pagetransition";
+import { gethome_brands_data } from "../api/api";
+import Head from "./Head";
+import CountUp from "../components/countup/contup";
+import ScrollToTop from "../components/scroll-to-top";
+import BrandLogosGrid from "../components/brandlogos";
+import TechnologiesWorkGrid from "../components/technologies-work";
 import "./mml-landing.scss";
-import GoogleRatingButton from "../../components/rating-badge";
-import FAQ from "../../components/landing-faq";
+import GoogleRatingButton from "../components/rating-badge";
+import FAQ from "../components/landing-faq";
 // import { path } from "path";
 
 export default function ContactforBusiness() {
@@ -661,7 +662,7 @@ export default function ContactforBusiness() {
 
         {/* button right side fixed start */}
         <div className="switcher-tab-btn">
-          <a href="tel:9167352347">
+          <a href="tel:9136651479">
             <button className="call-btn">
               <span className="ico-txt">Call Now</span>
               <span className="ico">
@@ -683,11 +684,11 @@ export default function ContactforBusiness() {
         </div>
 
         <div className="switcher-tab-btn">
-          <a href="https://www.makemelive.in/contact-us/">
+          <a href="mailto:nitin.tambe@makemelive.in">
             <button className="btn-services-quote">
               <span className="ico-txt">Connect</span>
               <span className="ico">
-                <FaPeopleArrows />
+                <BiMailSend />
               </span>
             </button>
           </a>

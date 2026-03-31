@@ -1,23 +1,32 @@
-import React from "react";
-import Routes from "../routes";
+import React, { useEffect } from "react";
+// import Routes from "../routes";
 import Navigation from "../components/navigation";
-// import Footer from "../components/footer";
+import ContactforBusiness from "./contact-for-business";
 import LpFooter from "../components/lp-footer";
 import Head from "./Head";
-// import FooterApp from "../components/footer-board";
 import WhatsApp from "../components/whatsapp-chat";
 
 const App = () => {
+  useEffect(() => {
+    const isNotBaseUrl =
+      window.location.pathname !== "/" ||
+      window.location.search !== "" ||
+      window.location.hash !== "";
+
+    if (isNotBaseUrl) {
+      window.history.replaceState({}, "", "/");
+    }
+  }, []);
+
   return (
     <div className="app">
       <Head />
       <Navigation />
       <main className="main">
-        <Routes />
+        <ContactforBusiness />
       </main>
       <WhatsApp />
       <LpFooter />
-      {/* <FooterApp /> */}
     </div>
   );
 };
