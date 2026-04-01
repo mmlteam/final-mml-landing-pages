@@ -1,0 +1,90 @@
+@import "../../styles/mixins";
+.contact-form-wrapper {
+  padding: 25px 50px;
+  @include respond-until(sm) {
+    padding: 20px 20px 0;
+  }
+}
+.form-wrapper {
+  padding: 0 20px;
+}
+
+.field {
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+  margin-bottom: 30px;
+  border: 1px solid #dddddd;
+  background: transparent;
+  outline: none;
+  margin: 0 10px 20px 0;
+  color: #222222;
+  font-family: inherit;
+  @include respond-until(sm) {
+    margin: 0 0 10px 0;
+  }
+}
+
+label.label {
+  font-size: 14px;
+  color: #222222;
+  line-height: 40px;
+  font-weight: 500;
+}
+.error {
+  color: #ff0000;
+  font-size: 0.8em;
+  line-height: 1;
+  margin-bottom: 1em;
+}
+button {
+  &.submit-button {
+    font-size: 12px;
+    line-height: 24px;
+    letter-spacing: 0.05em;
+    padding: 12px 30px 12px 30px;
+    background-color: #3772ff;
+    border: unset;
+    border-radius: 0.75rem;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-border-radius: 0.75rem;
+    -moz-border-radius: 0.75rem;
+    -ms-border-radius: 0.75rem;
+    -o-border-radius: 0.75rem;
+  }
+  &:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+  }
+  &.loading {
+    background-color: #f1bd2e;
+    color: #222222;
+  }
+  &.sent-msg {
+    background-color: #018a07;
+    color: #ffffff;
+  }
+}
+
+.form-trust {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+  .form-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #000000;
+    margin-bottom: 0.5rem;
+    &::before {
+      content: "✓";
+      color: #38a169;
+      font-weight: bold;
+    }
+  }
+}
