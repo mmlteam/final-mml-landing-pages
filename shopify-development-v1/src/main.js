@@ -10,18 +10,19 @@ import { ServerDataProvider } from "./state/serverDataContext";
 import "./styles/index.scss";
 
 const serverData = window.__SERVER_DATA__;
+const basename = process.env.PUBLIC_URL || undefined;
 
 export const main = () => {
   Loadable.preloadReady().then(() => {
     ReactDOM.hydrate(
       <GoogleReCaptchaProvider reCaptchaKey="6Lct25QsAAAAAIwmTXex1KIJW7i8ddMk0g8gmAwu">
         <ServerDataProvider value={serverData}>
-          <BrowserRouter>
+          <BrowserRouter basename={basename}>
             <App />
           </BrowserRouter>
         </ServerDataProvider>
       </GoogleReCaptchaProvider>,
-      document.getElementById("root"),
+      document.getElementById("root")
     );
   });
 };

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 process.env.NODE_ENV = "development";
-process.env.PUBLIC_URL = process.env.PUBLIC_URL || "";
+process.env.PUBLIC_URL = process.env.PUBLIC_URL || "/shopify-development-v1";
 
 require("@babel/register")({
   plugins: [
