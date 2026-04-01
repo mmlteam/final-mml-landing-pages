@@ -1,0 +1,86 @@
+@keyframes appear {
+    0% {
+      opacity: 0;
+      bottom: -3em;
+    }
+    100% {
+      opacity: 1;
+      bottom: 0;
+    }
+  }
+  
+  @keyframes slideIn {
+    0% {
+      transform: translateY(-3.5%);
+      margin-top: -10%;
+    }
+    100% {
+      transform: translateY(0);
+      margin-top: 0;
+    }
+  }
+  
+  
+  
+  @keyframes shrink {
+    0% {
+      width: 95%;
+    }
+    100% {
+      width: 90%;
+    }
+  }
+
+
+  @keyframes move-chevron {
+    25% {
+     opacity: 1;
+       }
+    33% {
+     opacity: 1;
+     transform: translateY($base * 3.8);
+    }
+    66% {
+     opacity: 1;
+     transform: translateY($base * 5.2);
+    }
+    100% {
+     opacity: 0;
+     transform: translateY($base * 8) scale(0.5);
+    }
+   }
+
+  @keyframes from0to360 {
+    from{transform:rotate(0);}
+    to{transform:rotate(360deg);}
+  }
+  
+  
+  @keyframes colorchange {
+      0% {
+        fill: #e91c23;
+      }
+      12% {fill: #f6e307;}
+      25% {fill: #00b3da;}
+    55% {fill: #e82e81;}
+    75% {fill: #5e2b87;}
+    100% {fill: #1f1f20;}
+  }
+  
+  @keyframes strokeColor {
+      0% {stroke: #e91c23;}
+      12% {stroke: #f6e307;}
+      25% {stroke: #00b3da;}
+    55% {stroke: #e82e81;}
+    75% {stroke: #5e2b87;}
+    100% {stroke: #1f1f20;}
+  }
+
+  @keyframes loadingbarinc {
+    from { left: -5%; width: 5%; }
+    to { left: 130%; width: 100%;}
+ }
+ @keyframes loadingbardec {
+    from { left: -80%; width: 80%; }
+    to { left: 110%; width: 10%;}
+ }

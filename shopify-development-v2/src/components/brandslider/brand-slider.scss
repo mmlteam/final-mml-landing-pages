@@ -1,0 +1,79 @@
+@import "../../styles/mixins";
+.marquee-outer {
+  width: 100%;
+  overflow: hidden;
+  padding: 24px 0;
+
+  // ---- TRACK ----
+  .marquee-track {
+    display: flex;
+    align-items: center;
+    gap: 32px; // space between logos
+    width: max-content;
+    animation: marquee-scroll 40s linear infinite;
+    -webkit-animation: marquee-scroll 40s linear infinite;
+    animation-play-state: running; // default: play
+
+    @include respond-until(sm) {
+      gap: 20px;
+      animation-duration: 30s; // a bit faster for mobile
+    }
+  }
+
+  // ✅ Pause marquee when hovering over the outer container
+  &:hover {
+    .marquee-track {
+      animation-play-state: paused;
+      -webkit-animation-play-state: paused;
+    }
+  }
+
+  // ---- ITEMS ----
+  .marquee-item {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .marquee-logo-box {
+    width: 240px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    img {
+      max-width: 100%;
+      max-height: 80px;
+      object-fit: contain;
+      opacity: 1;
+      transition: all 0.3s ease;
+
+      &:hover {
+        filter: grayscale(0%);
+        opacity: 1;
+      }
+
+      @include respond-until(sm) {
+        max-height: 60px;
+      }
+    }
+
+    @include respond-until(sm) {
+      width: 200px;
+      height: 90px;
+    }
+  }
+}
+
+// ---- KEYFRAMES ----
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}

@@ -1,0 +1,42 @@
+@import '../../styles/mixins';
+
+.footer-app-wrapper{
+    display: none;
+    @include respond-until(sm) {
+        display: block;
+    }
+.footer-app {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #000;
+    padding: 10px 10px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 111;
+    .footer-wrap-item {
+        display: flex;
+        align-items: center;
+        .footer-board-content{
+            font-size: 12px;
+            color: #fff;
+            p{
+                font-size: 10px;
+                color: #fff;
+                margin-bottom: 0;
+            }
+            a{
+                font-size: 12px;
+                color: #fff;
+                p{
+                    font-size: 10px;
+                    color: #fff;
+                }
+            }
+        }
+            
+    }
+}
+}
