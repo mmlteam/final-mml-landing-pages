@@ -12,6 +12,20 @@ if (NODE_ENV === "production") {
   };
 }
 
+const withPublicUrl = assetPath => {
+  if (!assetPath) {
+    return assetPath;
+  }
+
+  if (!PUBLIC_URL) {
+    return assetPath;
+  }
+
+  return assetPath.startsWith(PUBLIC_URL)
+    ? assetPath
+    : `${PUBLIC_URL}${assetPath.startsWith("/") ? assetPath : `/${assetPath}`}`;
+};
+
 const prefetchStyleLinks = bundles => {
   if (NODE_ENV !== "production") {
     return "";
@@ -24,7 +38,7 @@ const prefetchStyleLinks = bundles => {
         file.match(/\.css$/) &&
         !bundles.find(b => b.publicPath === assetManifest[file])
     )
-    .map(cssFile => `${PUBLIC_URL}${assetManifest[cssFile]}`);
+    .map(cssFile => withPublicUrl(assetManifest[cssFile]));
 
   return assetFilePaths
     .map(
@@ -41,10 +55,10 @@ const cssLinks = bundles => {
   const mainCSS = assetManifest["main.css"];
   const bundleFilePaths = bundles
     .filter(bundle => bundle.file.match(/\.css$/))
-    .map(cssBundle => `${PUBLIC_URL}/${cssBundle.file}`);
+    .map(cssBundle => withPublicUrl(cssBundle.file));
 
   return [mainCSS, ...bundleFilePaths]
-    .map(cssFilePath => `<link rel="stylesheet" href="${cssFilePath}">`)
+    .map(cssFilePath => `<link rel="stylesheet" href="${withPublicUrl(cssFilePath)}">`)
     .join("");
 };
 
@@ -52,10 +66,10 @@ const preloadScripts = bundles => {
   const mainJS = assetManifest["main.js"];
   const bundleFilePaths = bundles
     .filter(bundle => bundle.file.match(/\.js$/))
-    .map(jsBundle => `${PUBLIC_URL}/${jsBundle.file}`);
+    .map(jsBundle => withPublicUrl(jsBundle.file));
 
   return [...bundleFilePaths, mainJS]
-    .map(jsFilePath => `<link rel="preload" as="script" href="${jsFilePath}">`)
+    .map(jsFilePath => `<link rel="preload" as="script" href="${withPublicUrl(jsFilePath)}">`)
     .join("");
 };
 
@@ -63,12 +77,12 @@ const jsScripts = bundles => {
   const mainJS = assetManifest["main.js"];
   const bundleFilePaths = bundles
     .filter(bundle => bundle.file.match(/\.js$/))
-    .map(jsBundle => `${PUBLIC_URL}/${jsBundle.file}`);
+    .map(jsBundle => withPublicUrl(jsBundle.file));
 
   return [...bundleFilePaths, mainJS]
     .map(
       jsFilePath =>
-        `<script type="text/javascript" src="${jsFilePath}" defer></script>`
+        `<script type="text/javascript" src="${withPublicUrl(jsFilePath)}" defer></script>`
     )
     .join("");
 };

@@ -8,9 +8,15 @@ import WhatsApp from "../components/whatsapp-chat";
 
 const App = () => {
   useEffect(() => {
-    const basePath = "/shopify-development-v2";
+    const basePath = (process.env.PUBLIC_URL || "").replace(/\/+$/, "");
+
+    if (!basePath) {
+      return;
+    }
+
+    const currentPath = window.location.pathname.replace(/\/+$/, "");
     const isWrongPath =
-      window.location.pathname !== basePath ||
+      currentPath !== basePath ||
       window.location.search !== "" ||
       window.location.hash !== "";
 
@@ -21,7 +27,13 @@ const App = () => {
 
   return (
     <div className="app">
-      <Head />
+      <Head
+        title="Shopify Development V2"
+        description="Hello World placeholder landing page for shopify-development-v2."
+        url="https://solutions.makemelive.in/shopify-development-v2/"
+        type="website"
+        site_name="Makemelive Solutions"
+      />
       <Navigation />
       <main className="main">
         <ContactforBusiness />

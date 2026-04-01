@@ -11,10 +11,12 @@ import { indexHtml } from "./indexHtml";
 import stats from "../build/react-loadable.json";
 import { ServerDataProvider } from "../src/state/serverDataContext";
 
+const basename = process.env.PUBLIC_URL || undefined;
+
 const ServerApp = ({ context, data, location }) => {
   return (
     <ServerDataProvider value={data}>
-      <StaticRouter location={location} context={context}>
+      <StaticRouter basename={basename} location={location} context={context}>
         <App />
       </StaticRouter>
     </ServerDataProvider>

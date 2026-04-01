@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 process.env.NODE_ENV = "production";
-process.env.PUBLIC_URL = process.env.PUBLIC_URL || "";
+process.env.PUBLIC_URL =
+  process.env.PUBLIC_URL || "/shopify-development-v2";
 
 const cluster = require("cluster");
 
