@@ -8,7 +8,7 @@ import WhatsApp from "../components/whatsapp-chat";
 
 const App = () => {
   useEffect(() => {
-    const basePath = "/shopify-development-v1";
+    const basePath = "/shopify-development-v2";
     const isWrongPath =
       window.location.pathname !== basePath ||
       window.location.search !== "" ||
