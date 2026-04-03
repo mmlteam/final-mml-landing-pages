@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Hamburger from "./hamburger";
-import { FaFacebookF } from "react-icons/fa";
-import { FaLinkedinIn } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
-import { FaInstagram } from "react-icons/fa";
-import { FaPhoneAlt } from "react-icons/fa";
-
-// import { FaYoutube } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaLinkedinIn,
+  FaInstagram,
+  FaPhoneAlt,
+} from "react-icons/fa";
+import { FaXTwitter, FaLocationDot } from "react-icons/fa6";
+import { MdEmail } from "react-icons/md";
 
 export default function MenuItem() {
   const [hamburger, setHamburger] = useState(false);
@@ -17,34 +18,109 @@ export default function MenuItem() {
       <div className="hamburger-wrap">
         <Hamburger status={hamburger} onChildClick={setHamburger} />
       </div>
+
       <nav
         className={hamburger ? "main-menu menu-open" : "main-menu menu-close"}
       >
-        <ul className="navbar-wrap">
-          <li className="list-item-wrap" onClick={showHamburger}>
-            <a exact href="#portfolio" activeClassName="active">
-              <span className="list-item">01 - Portfolio</span>
-            </a>
-          </li>
+        <div className="mobile-menu-inner">
+          <ul className="navbar-wrap">
+            <li className="list-item-wrap" onClick={showHamburger}>
+              <a href="#portfolio">
+                <span className="list-item">01 - Portfolio</span>
+              </a>
+            </li>
 
-          <li className="list-item-wrap" onClick={showHamburger}>
-            <a href="#process" activeClassName="active">
-              <span className="list-item">02 - Process</span>
-            </a>
-          </li>
+            <li className="list-item-wrap" onClick={showHamburger}>
+              <a href="#process">
+                <span className="list-item">02 - Process</span>
+              </a>
+            </li>
 
-          <li className="list-item-wrap" onClick={showHamburger}>
-            <a href="#faq" activeClassName="active">
-              <span className="list-item">03 - FAQs</span>
+            <li className="list-item-wrap" onClick={showHamburger}>
+              <a href="#faq">
+                <span className="list-item">03 - FAQs</span>
+              </a>
+            </li>
+          </ul>
+
+          <div className="mobile-menu-contact">
+            <p className="mobile-menu-contact__title">Contact Us</p>
+
+            <a href="tel:9136651479" className="mobile-menu-contact__item">
+              <FaPhoneAlt />
+              <span>+91 91366 51479</span>
             </a>
-          </li>
-        </ul>
+
+            <a
+              href="mailto:nitin.tambe@makemelive.in"
+              className="mobile-menu-contact__item"
+            >
+              <MdEmail />
+              <span>nitin.tambe@makemelive.in</span>
+            </a>
+
+            <div className="mobile-menu-contact__item mobile-menu-contact__item--address">
+              <a
+                href="https://maps.app.goo.gl/BpcrHjHfE8Da6WcP9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mobile-menu-contact__item mobile-menu-contact__item--address"
+              >
+                <FaLocationDot />
+                <span>
+                  C-344, 3rd Floor, Oshiwara Industrial Centre, Off New Link Rd,
+                  Goregaon West, Mumbai, Maharashtra 400104
+                </span>
+              </a>
+            </div>
+
+            <div className="mobile-menu-social">
+              <a
+                href="https://www.linkedin.com/company/wearemakemelive/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+              >
+                <FaLinkedinIn />
+              </a>
+              <a
+                href="https://www.instagram.com/wearemakemelive"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                <FaInstagram />
+              </a>
+              <a
+                href="https://www.facebook.com/wearemakemelive"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+              >
+                <FaFacebookF />
+              </a>
+
+              <a
+                href="https://twitter.com/makemelivetech"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="X"
+              >
+                <FaXTwitter />
+              </a>
+            </div>
+          </div>
+        </div>
       </nav>
+
       <div className="header-social-icon">
         <ul className="header-social-icon-wrap">
           <li className="header-social-list-item">
             <a href="tel:9136651479" target="_blank" rel="noopener noreferrer">
-              <FaPhoneAlt fill="#fff" /> 9136651479
+              <span className="phone-ring-icon">
+                <FaPhoneAlt fill="#fff" />
+              </span>{" "}
+              9136651479
             </a>
           </li>
           <li className="header-button">

@@ -245,7 +245,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 30px 50px 30px 50px;
+      padding: 30px 65px 30px 50px;
 
       @include respond-until(sm) {
         display: block;
@@ -266,7 +266,7 @@
             justify-content: center;
           }
           li.footer-social-list-item {
-            padding: 0 20px 10px 0;
+            padding: 0 20px 0px 0;
 
             a {
               font-size: 15px;

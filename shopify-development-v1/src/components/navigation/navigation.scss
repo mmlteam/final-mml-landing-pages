@@ -39,6 +39,7 @@
       position: fixed;
       top: 0;
       right: -100%;
+      z-index: 9;
       &.menu-open {
         right: 0;
         transition: 350ms;
@@ -197,7 +198,7 @@
       cursor: pointer;
       z-index: 20;
       @include respond-until(sm) {
-        top: 22px;
+        top: 30px;
       }
 
       .line {
@@ -343,4 +344,237 @@
 .lp-quote-btn {
   background: #1eb6e7;
   color: #fff;
+}
+
+// new addition changes for mobile menu
+.main-head-wrap {
+  .mobile-menu-inner {
+    width: 100%;
+  }
+
+  .mobile-menu-contact {
+    display: none;
+  }
+  @include respond-until(sm) {
+    nav.main-menu {
+      justify-content: flex-start;
+      overflow-y: auto;
+    }
+
+    .mobile-menu-inner {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 100px 10px 24px;
+    }
+
+    nav.main-menu ul.navbar-wrap {
+      padding: 0;
+      margin: 0;
+    }
+
+    .mobile-menu-contact {
+      display: block;
+      margin-top: 28px;
+      padding: 0px 6px 0;
+    }
+
+    .mobile-menu-contact__title {
+      font-size: 12px;
+      line-height: 1;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #ffffff99;
+      margin: 0 0 16px;
+    }
+
+    .mobile-menu-contact__item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 14px;
+      transition: color 0.2s ease;
+
+      svg {
+        flex: 0 0 auto;
+        margin-top: 2px;
+        color: rgba(255, 255, 255, 0.5019607843);
+        font-size: 15px;
+      }
+
+      span {
+        color: rgba(255, 255, 255, 0.5019607843);
+      }
+
+      &:hover {
+        color: #fff;
+
+        span {
+          color: #fff;
+        }
+      }
+    }
+
+    .mobile-menu-contact__item--address {
+      cursor: default;
+    }
+
+    .mobile-menu-social {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 18px;
+      padding-bottom: 8px;
+
+      a {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid #2d2d2d;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.5019607843);
+        text-decoration: none;
+        transition: all 0.2s ease;
+
+        &:hover {
+          border-color: #3772ff;
+          color: #3772ff;
+          transform: translateY(-1px);
+        }
+      }
+    }
+  }
+}
+
+.phone-ring-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  flex: 0 0 44px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.18);
+
+  svg {
+    position: relative;
+    z-index: 3;
+    color: #fff;
+    transform-origin: 50% 50%;
+    animation: phone-oscillate 1.1s infinite ease-in-out;
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* soft background pulse */
+  &::before {
+    background: rgba(255, 255, 255, 0.08);
+    animation: phone-ring-fill 2.2s infinite ease-out;
+    z-index: 1;
+  }
+
+  /* outer ring ripple */
+  &::after {
+    border: 1px solid rgb(255, 255, 255);
+    animation: phone-ring-circle 1.2s infinite ease-out;
+    z-index: 2;
+    -webkit-animation: phone-ring-circle 1.2s infinite ease-out;
+  }
+}
+
+.phone-ring-icon--mobile {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  background: transparent;
+  box-shadow: none;
+
+  &::before,
+  &::after {
+    display: none;
+  }
+
+  svg {
+    animation-duration: 1.2s;
+  }
+}
+
+@keyframes phone-ring-circle {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+}
+
+@keyframes phone-ring-fill {
+  0% {
+    transform: scale(1);
+    opacity: 0.14;
+  }
+  50% {
+    transform: scale(1.28);
+    opacity: 0.08;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes phone-oscillate {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(-18deg);
+  }
+  20% {
+    transform: rotate(18deg);
+  }
+  30% {
+    transform: rotate(-18deg);
+  }
+  40% {
+    transform: rotate(18deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.header-social-list-item a:hover .phone-ring-icon,
+.mobile-menu-contact__item:hover .phone-ring-icon {
+  svg,
+  &::before,
+  &::after {
+    animation-play-state: paused;
+  }
 }

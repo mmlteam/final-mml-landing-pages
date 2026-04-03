@@ -232,7 +232,7 @@ const LandingContactForm = () => {
 
         <button
           type="submit"
-          className={`submit-button ${buttonClass}`}
+          className={`submit-button mujahid ${buttonClass}`}
           disabled={formValid || loader}
         >
           {loader ? "Submitting..." : buttonText}
@@ -242,7 +242,7 @@ const LandingContactForm = () => {
       </form>
 
       <div className="form-trust">
-        <div className="form-trust-item">Free 30-minute strategy call</div>
+        <div className="form-trust-item">Free 300-minute strategy call</div>
         <div className="form-trust-item">Custom quote within 24 hours</div>
         <div className="form-trust-item">Quick response Mon-Sat</div>
       </div>

@@ -913,6 +913,13 @@
       }
     }
 
+    .mobile-break {
+      display: none;
+      @include respond-until(sm) {
+        display: block;
+      }
+    }
+
     p {
       color: #4a5568;
       font-size: 1.125rem;
@@ -1749,10 +1756,9 @@
         align-self: center;
         min-width: 220px;
         padding: 14px 32px;
-        border-radius: 999px;
         border: none;
-        background: #020617;
-        color: #ffffff;
+        background: #cccccc;
+        color: #666666;
         font-size: 16px;
         font-weight: 600;
         letter-spacing: 0.02em;
@@ -1762,7 +1768,7 @@
           background 0.18s ease, opacity 0.18s ease;
 
         &:hover:not(:disabled) {
-          background: #000814;
+          background: #cccccc;
           transform: translateY(-1px);
           box-shadow: 0 22px 55px rgba(0, 0, 0, 0.6);
         }

@@ -7,6 +7,7 @@ export default function AuditPopup() {
 
   const [open, setOpen] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const [triggerType, setTriggerType] = useState(""); // "timer" | "exit" | "scroll" | "submit"
 
   const setSessionCookie = (name, value) => {
     document.cookie = `${name}=${value}; path=/; SameSite=Lax`;
@@ -26,10 +27,6 @@ export default function AuditPopup() {
     return null;
   };
 
-  const deleteCookie = (name) => {
-    document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax`;
-  };
-
   // Browser session me pehle se dismiss hua hai ya nahi
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -42,23 +39,25 @@ export default function AuditPopup() {
 
   // 1) Auto open after 35 sec
   useEffect(() => {
-    if (dismissed) return;
+    if (dismissed || open) return;
 
     const timer = setTimeout(() => {
+      setTriggerType("timer");
       setOpen(true);
     }, 35000);
 
     return () => clearTimeout(timer);
-  }, [dismissed]);
+  }, [dismissed, open]);
 
   // 2) Exit intent
   useEffect(() => {
-    if (dismissed) return;
+    if (dismissed || open) return;
 
     const handleExitIntent = (e) => {
-      if (dismissed) return;
+      if (dismissed || open) return;
 
       if (e.clientY <= 0) {
+        setTriggerType("exit");
         setOpen(true);
       }
     };
@@ -68,15 +67,56 @@ export default function AuditPopup() {
     return () => {
       document.removeEventListener("mouseleave", handleExitIntent);
     };
-  }, [dismissed]);
+  }, [dismissed, open]);
+
+  // 3) Open on 50% scroll
+  useEffect(() => {
+    if (dismissed || open) return;
+
+    const handleScroll = () => {
+      if (dismissed || open) return;
+
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+
+      const scrollableHeight = docHeight - windowHeight;
+
+      if (scrollableHeight <= 0) return;
+
+      const scrollPercent = (scrollTop / scrollableHeight) * 100;
+
+      if (scrollPercent >= 50) {
+        setTriggerType("scroll");
+        setOpen(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [dismissed, open]);
 
   const handleClose = () => {
     setOpen(false);
     setDismissed(true);
+    setTriggerType("");
 
     if (typeof window !== "undefined") {
       setSessionCookie(COOKIE_NAME, "true");
     }
+  };
+
+  // Form successful submit ke baad auto close
+  const handleFormSuccess = () => {
+    setTriggerType("submit");
+
+    setTimeout(() => {
+      handleClose();
+    }, 2500); // 2.5 sec baad popup close
   };
 
   if (!open) return null;
@@ -88,17 +128,14 @@ export default function AuditPopup() {
           ×
         </button>
 
-        <div className="popup-tag">⚡ WAIT! BEFORE YOU GO...</div>
+        {triggerType === "exit" && (
+          <div className="popup-tag">⚡ WAIT! BEFORE YOU GO...</div>
+        )}
 
         <h2>
           Get a <span>FREE Website Audit</span> + <br />
           30-Min Expert Consultation
         </h2>
-
-        <p className="popup-desc">
-          We&apos;ll analyze your website and show exactly what to fix—no
-          pressure.
-        </p>
 
         <div className="popup-benefits">
           <ul>
@@ -108,7 +145,7 @@ export default function AuditPopup() {
           </ul>
         </div>
 
-        <AuditPopupForm />
+        <AuditPopupForm onSuccess={handleFormSuccess} />
 
         <div className="popup-footer">
           ✓ No obligation • Real experts • Real value

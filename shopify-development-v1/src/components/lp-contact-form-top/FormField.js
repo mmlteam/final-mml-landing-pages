@@ -46,19 +46,23 @@ const FormField = ({
 
       {/* SELECT */}
       {selectField && (
-        <select
-          name={fieldName}
-          className={className}
-          value={value}
-          onChange={(e) => handleField(e.target.value)}
-        >
-          <option value="">{placeholder}</option>
-          {options.map((opt, index) => (
-            <option key={index} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+        <div className="select-field-wrap">
+          <select
+            name={fieldName}
+            className={`${className} select-field ${
+              !value ? "is-placeholder" : "has-value"
+            }`}
+            value={value}
+            onChange={(e) => handleField(e.target.value)}
+          >
+            <option value="">{placeholder}</option>
+            {options.map((opt, index) => (
+              <option key={index} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </div>
       )}
     </div>
   );

@@ -54,11 +54,8 @@ export default function ContactforBusiness() {
   const handleConsultationScroll = (e) => {
     e.preventDefault();
 
-    const banner = document.getElementById("consultation-banner");
-    if (!banner) return;
-
-    const currentScroll =
-      window.pageYOffset || document.documentElement.scrollTop;
+    const formTarget = document.getElementById("contact-top-form-wrapper");
+    if (!formTarget) return;
 
     const header =
       document.querySelector(".site-header") ||
@@ -66,15 +63,16 @@ export default function ContactforBusiness() {
       document.querySelector("header");
 
     const headerHeight = header ? header.offsetHeight : 0;
-    const bannerTop = banner.getBoundingClientRect().top + window.pageYOffset;
 
-    // Agar user already top/banner zone me hai to scroll mat karo
-    if (currentScroll <= bannerTop + 20) {
-      return;
-    }
+    const extraOffset = 16; // thoda breathing space
+    const targetTop =
+      formTarget.getBoundingClientRect().top +
+      window.pageYOffset -
+      headerHeight -
+      extraOffset;
 
     window.scrollTo({
-      top: bannerTop - headerHeight,
+      top: targetTop,
       behavior: "smooth",
     });
   };
@@ -213,7 +211,7 @@ export default function ContactforBusiness() {
 
                   <div className="cta-button-row">
                     <a
-                      href="#consultation-banner"
+                      href="#contact-top-form-wrapper"
                       onClick={handleConsultationScroll}
                       className="cta-btn-custom cta-btn-primary"
                     >
@@ -299,7 +297,10 @@ export default function ContactforBusiness() {
               <div className="col-md-12 col-xs-12">
                 <div class="section-header">
                   <h2>Why Choose Makemelive for Shopify Development?</h2>
-                  <p>Tailored solutions built around your business goals</p>
+                  <p>
+                    Tailored solutions built around your{" "}
+                    <span class="mobile-break"></span> business goals
+                  </p>
                 </div>
                 <div class="features-grid">
                   <div class="feature-card">
