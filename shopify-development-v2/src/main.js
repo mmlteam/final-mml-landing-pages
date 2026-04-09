@@ -21,7 +21,7 @@ export const main = () => {
           </BrowserRouter>
         </ServerDataProvider>
       </GoogleReCaptchaProvider>,
-      document.getElementById("root"),
+      document.getElementById("root")
     );
   });
 };

@@ -13,7 +13,7 @@ export default function BrandLogosGrid() {
     { name: "Brand 9", image: "./images/brand-logos/brand-hetero.png" },
     { name: "Brand 10", image: "./images/brand-logos/brand-koredg.png" },
     { name: "Brand 11", image: "./images/brand-logos/brand-reistor.png" },
-    { name: "Brand 12", image: "./images/brand-logos/brand-saintg.png" },
+    { name: "Brand 12", image: "./images/brand-logos/brand-saintg.png" }
   ];
   return (
     <section className="trusted-section">

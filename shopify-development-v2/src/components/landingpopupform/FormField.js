@@ -10,9 +10,9 @@ const FormField = ({
   placeholder,
   selectField,
   options = [],
-  fieldFn,
+  fieldFn
 }) => {
-  const handleField = (inputValue) => {
+  const handleField = inputValue => {
     fieldFn(inputValue);
   };
 
@@ -23,7 +23,7 @@ const FormField = ({
       {/* INPUT */}
       {!textAreaField && !selectField && (
         <input
-          onChange={(e) => handleField(e.target.value)}
+          onChange={e => handleField(e.target.value)}
           value={value}
           name={fieldName}
           type={type}
@@ -35,7 +35,7 @@ const FormField = ({
       {/* TEXTAREA */}
       {textAreaField && (
         <textarea
-          onChange={(e) => handleField(e.target.value)}
+          onChange={e => handleField(e.target.value)}
           name={fieldName}
           className={className}
           value={value}
@@ -50,7 +50,7 @@ const FormField = ({
           name={fieldName}
           className={className}
           value={value}
-          onChange={(e) => handleField(e.target.value)}
+          onChange={e => handleField(e.target.value)}
         >
           <option value="">{placeholder}</option>
           {options.map((opt, index) => (

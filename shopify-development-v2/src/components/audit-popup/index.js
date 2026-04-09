@@ -12,7 +12,7 @@ export default function AuditPopup() {
     document.cookie = `${name}=${value}; path=/; SameSite=Lax`;
   };
 
-  const getCookie = (name) => {
+  const getCookie = name => {
     const cookieName = `${name}=`;
     const cookies = document.cookie.split(";");
 
@@ -26,7 +26,7 @@ export default function AuditPopup() {
     return null;
   };
 
-  const deleteCookie = (name) => {
+  const deleteCookie = name => {
     document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax`;
   };
 
@@ -55,7 +55,7 @@ export default function AuditPopup() {
   useEffect(() => {
     if (dismissed) return;
 
-    const handleExitIntent = (e) => {
+    const handleExitIntent = e => {
       if (dismissed) return;
 
       if (e.clientY <= 0) {
@@ -83,7 +83,7 @@ export default function AuditPopup() {
 
   return (
     <div className="audit-popup-overlay" onClick={handleClose}>
-      <div className="audit-popup" onClick={(e) => e.stopPropagation()}>
+      <div className="audit-popup" onClick={e => e.stopPropagation()}>
         <button className="popup-close" onClick={handleClose} type="button">
           ×
         </button>

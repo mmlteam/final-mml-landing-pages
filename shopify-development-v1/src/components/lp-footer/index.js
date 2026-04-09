@@ -19,7 +19,7 @@ export default function LpFooter() {
               © {currentYear} - Makemelive Technologies. All rights reserved.
             </p>
           </div>
-          <div className="footer-bottom-social-icon">
+          {/* <div className="footer-bottom-social-icon">
             <ul className="footer-social-icon-wrap">
               <li className="footer-social-list-item">
                 <a id="desktop_footer_linkedin"
@@ -52,7 +52,7 @@ export default function LpFooter() {
                 </a>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

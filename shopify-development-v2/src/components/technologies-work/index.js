@@ -8,7 +8,7 @@ export default function TechnologiesWorkGrid() {
     { name: "Brand 3", image: "./images/programming-languages/wordpress.png" },
     {
       name: "Brand 5",
-      image: "./images/programming-languages/custom-code.png",
+      image: "./images/programming-languages/custom-code.png"
     },
     { name: "Brand 6", image: "./images/programming-languages/java.png" },
     { name: "Brand 7", image: "./images/programming-languages/js.png" },
@@ -22,7 +22,7 @@ export default function TechnologiesWorkGrid() {
     { name: "Brand 14", image: "./images/programming-languages/nextjs.png" },
     { name: "Brand 15", image: "./images/programming-languages/html.png" },
     { name: "Brand 16", image: "./images/programming-languages/mongo-db.png" },
-    { name: "Brand 17", image: "./images/programming-languages/css-3.png" },
+    { name: "Brand 17", image: "./images/programming-languages/css-3.png" }
   ];
   return (
     <section className="technologies-section">

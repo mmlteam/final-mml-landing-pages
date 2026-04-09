@@ -26,7 +26,7 @@ export default function ContactforBusiness() {
   const [brandTrustLogo, setBrandTrustLogo] = useState([]);
 
   useEffect(() => {
-    gethome_brands_data().then((brandlogos) => {
+    gethome_brands_data().then(brandlogos => {
       setBrandTrustLogo(brandlogos);
     }, []);
   }, []);
@@ -35,23 +35,23 @@ export default function ContactforBusiness() {
     const elements = document.querySelectorAll(".fade-in");
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
           }
         });
       },
-      { threshold: 0.2 },
+      { threshold: 0.2 }
     );
 
-    elements.forEach((el) => observer.observe(el));
+    elements.forEach(el => observer.observe(el));
 
     return () => observer.disconnect();
   }, []);
 
   // scroll top handler start
-  const handleConsultationScroll = (e) => {
+  const handleConsultationScroll = e => {
     e.preventDefault();
 
     const banner = document.getElementById("consultation-banner");
@@ -75,7 +75,7 @@ export default function ContactforBusiness() {
 
     window.scrollTo({
       top: bannerTop - headerHeight,
-      behavior: "smooth",
+      behavior: "smooth"
     });
   };
   // scroll top handler end

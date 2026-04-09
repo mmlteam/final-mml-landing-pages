@@ -13,22 +13,22 @@ const AuditPopupForm = () => {
 
   const [loading, setLoading] = useState(false);
   const [buttonText, setButtonText] = useState(
-    "Book My Free Audit + Consultation →",
+    "Book My Free Audit + Consultation →"
   );
 
-  const validateName = (value) => {
+  const validateName = value => {
     setName(value);
     setNameError(value.trim().length === 0);
   };
 
-  const validatePhone = (value) => {
+  const validatePhone = value => {
     const cleanedValue = String(value).trim();
     const rule = /^\d{10}$/;
     setPhone(cleanedValue);
     setPhoneError(!rule.test(cleanedValue));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     if (!name.trim() || !phone.trim() || nameError || phoneError) return;
@@ -46,8 +46,8 @@ const AuditPopupForm = () => {
           phone: phone,
           checkbox: false,
           page: "audit-popup",
-          budget: "",
-        },
+          budget: ""
+        }
       });
 
       console.log("sendmail response:", response.data);
@@ -60,7 +60,7 @@ const AuditPopupForm = () => {
     } catch (err) {
       console.error(
         "sendmail error:",
-        err.response?.data || err.message || err,
+        err.response?.data || err.message || err
       );
       setButtonText("Something went wrong");
     } finally {

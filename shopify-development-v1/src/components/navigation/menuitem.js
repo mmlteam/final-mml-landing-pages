@@ -23,7 +23,7 @@ export default function MenuItem() {
         className={hamburger ? "main-menu menu-open" : "main-menu menu-close"}
       >
         <div className="mobile-menu-inner">
-          <ul className="navbar-wrap">
+          {/* <ul className="navbar-wrap">
             <li className="list-item-wrap" onClick={showHamburger}>
               <a id="menu-portfolio" href="#portfolio">
                 <span className="list-item">01 - Portfolio</span>
@@ -41,7 +41,7 @@ export default function MenuItem() {
                 <span className="list-item">03 - FAQs</span>
               </a>
             </li>
-          </ul>
+          </ul> */}
 
           <div className="mobile-menu-contact">
             <p className="mobile-menu-contact__title">Contact Us</p>
@@ -75,12 +75,12 @@ export default function MenuItem() {
                 <FaLocationDot />
                 <span>
                   C-344, 3rd Floor, Oshiwara Industrial Centre, Off New Link Rd,
-                  Goregaon West, Mumbai, Maharashtra 400104
+                  Goregaon (West), Mumbai, Maharashtra 400104
                 </span>
               </a>
             </div>
 
-            <div className="mobile-menu-social">
+            {/* <div className="mobile-menu-social">
               <a
                 id="mobile-sidebar-linkedin"
                 href="https://www.linkedin.com/company/wearemakemelive/"
@@ -118,7 +118,7 @@ export default function MenuItem() {
               >
                 <FaXTwitter />
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
       </nav>

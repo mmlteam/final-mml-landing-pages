@@ -4,7 +4,7 @@ import React, {
   useRef,
   useState,
   useLayoutEffect,
-  useCallback,
+  useCallback
 } from "react";
 import { gethome_testimonial_data } from "../../api/api";
 import "./lp-client-testimonials.scss";
@@ -13,7 +13,7 @@ export default function LPClientTestimonialsMarquee({
   speed = 40,
   gap = 32,
   logoHeight = 72,
-  equalHeights = true,
+  equalHeights = true
 }) {
   const [items, setItems] = useState([]);
   const sectionRef = useRef(null);
@@ -37,12 +37,12 @@ export default function LPClientTestimonialsMarquee({
       try {
         const data = await gethome_testimonial_data();
         if (!mounted) return;
-        const mapped = (Array.isArray(data) ? data : []).map((t) => ({
+        const mapped = (Array.isArray(data) ? data : []).map(t => ({
           quote: t.home_testimonials_client_testimonial || "",
           author: t.home_testimonials_client_name || "",
           role: [
             t.home_testimonials_client_designation,
-            t.home_testimonials_project_name,
+            t.home_testimonials_project_name
           ]
             .filter(Boolean)
             .join(" , "),
@@ -50,7 +50,7 @@ export default function LPClientTestimonialsMarquee({
           logo: t.home_testimonials_client_project_logo
             ? "https://api.mmlprojects.in/images/client-testimonials/" +
               t.home_testimonials_client_project_logo
-            : null,
+            : null
         }));
         setItems(mapped);
       } catch (e) {
@@ -70,7 +70,7 @@ export default function LPClientTestimonialsMarquee({
     if (!equalHeights || !sectionRef.current) return;
     const heights = cardRefs.current
       .filter(Boolean)
-      .map((el) => el.offsetHeight || 0);
+      .map(el => el.offsetHeight || 0);
     const maxH = heights.length ? Math.max(...heights) : 0;
     sectionRef.current.style.setProperty("--card-h", `${maxH}px`);
   }, [equalHeights]);
@@ -84,9 +84,9 @@ export default function LPClientTestimonialsMarquee({
     window.addEventListener("resize", onResize);
 
     const ro = new ResizeObserver(measureHeights);
-    cardRefs.current.forEach((el) => el && ro.observe(el));
+    cardRefs.current.forEach(el => el && ro.observe(el));
 
-    cardRefs.current.forEach((el) => {
+    cardRefs.current.forEach(el => {
       if (!el) return;
       const img = el.querySelector("img");
       if (img && !img.complete) {
@@ -112,7 +112,7 @@ export default function LPClientTestimonialsMarquee({
         "--logo-h": "50px",
         "--stage-max": "1100px",
         "--stage-pad": "12px",
-        "--cards": 3,
+        "--cards": 3
       }}
     >
       <div className="lpctm-stage">
@@ -122,7 +122,7 @@ export default function LPClientTestimonialsMarquee({
 
           <div className="lpctm-track">
             {doubled.map((t, i) => {
-              const measureRef = (el) => {
+              const measureRef = el => {
                 if (i < items.length) cardRefs.current[i] = el;
               };
 
@@ -167,7 +167,7 @@ export default function LPClientTestimonialsMarquee({
                         <div
                           className="lpctm-author"
                           style={{
-                            "--avatar": `"${getInitials(t.author)}"`,
+                            "--avatar": `"${getInitials(t.author)}"`
                           }}
                         >
                           <div className="lpctm-authorText">

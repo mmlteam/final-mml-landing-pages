@@ -12,7 +12,7 @@ export default function PortfolioCard({ portGrid }) {
           work_portfilio_portfolioimage,
           work_portfolio_category,
           work_portfolio_desc,
-          work_portfolio_badge,
+          work_portfolio_badge
         } = item;
 
         const bgImage = `/images/work/${work_portfilio_portfolioimage}`;

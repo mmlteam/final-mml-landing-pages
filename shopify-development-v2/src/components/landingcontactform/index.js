@@ -25,10 +25,10 @@ const LandingContactForm = () => {
     { value: "1l-2.5l", label: "₹1,00,000 - ₹2,50,000" },
     { value: "2.5l-5l", label: "₹2,50,000 - ₹5,00,000" },
     { value: "above5l", label: "Above ₹5,00,000" },
-    { value: "discuss", label: "I need to discuss my requirements" },
+    { value: "discuss", label: "I need to discuss my requirements" }
   ];
 
-  const validateUsername = (fname) => {
+  const validateUsername = fname => {
     const errorMsgCaret = { ...errorMsg };
 
     if (fname.trim().length === 0) {
@@ -42,7 +42,7 @@ const LandingContactForm = () => {
     setErrorMsg(errorMsgCaret);
   };
 
-  const validateBudget = (value) => {
+  const validateBudget = value => {
     const errorMsgCaret = { ...errorMsg };
 
     if (value.length === 0) {
@@ -56,7 +56,7 @@ const LandingContactForm = () => {
     setErrorMsg(errorMsgCaret);
   };
 
-  const validateUserPhone = (value) => {
+  const validateUserPhone = value => {
     const errorMsgCaret = { ...errorMsg };
     const cleanedValue = String(value).trim();
     const rule = /^\d{10,15}$/;
@@ -75,17 +75,17 @@ const LandingContactForm = () => {
     setErrorMsg(errorMsgCaret);
   };
 
-  const updateUsername = (fname) => {
+  const updateUsername = fname => {
     setFirstName(fname);
     validateUsername(fname);
   };
 
-  const updateUserBudget = (value) => {
+  const updateUserBudget = value => {
     setBudget(value);
     validateBudget(value);
   };
 
-  const updateUserPhone = (value) => {
+  const updateUserPhone = value => {
     setPhone(value);
     validateUserPhone(value);
   };
@@ -120,7 +120,7 @@ const LandingContactForm = () => {
     }
   }, [firstName, phone, budget, fnameValidate, phoneValidate, budgetValidate]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     if (formValid || loader) return;
@@ -136,7 +136,7 @@ const LandingContactForm = () => {
         message: `Budget: ${budget}`,
         phone: phone,
         page: "contact",
-        budget: budget,
+        budget: budget
       };
 
       const [response1, response2] = await axios.all([
@@ -149,14 +149,14 @@ const LandingContactForm = () => {
             phone: phone,
             checkbox: false,
             page: "contact",
-            budget: budget,
-          },
+            budget: budget
+          }
         }),
         axios.post("https://api.mmlprojects.in/formdata.php", data, {
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }),
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        })
       ]);
 
       if (response1.status) {

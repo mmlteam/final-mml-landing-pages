@@ -6,6 +6,7 @@ import LpContactForm from "../components/lp-contact-form-top";
 import { imagePath } from "../utils/assetUtils";
 import AuditPopup from "../components/audit-popup";
 import { FaPhoneAlt } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 import { CiMail } from "react-icons/ci";
 import { BiConversation } from "react-icons/bi";
 import { FaPeopleArrows } from "react-icons/fa";
@@ -98,6 +99,19 @@ export default function ContactforBusiness() {
             <div className="row justify-content-left v-align">
               <div className="col-md-7 col-xs-12">
                 <div className="banner-left-wrap">
+                  <div className="shopify-partner-badge">
+                    <span className="badge-icon">
+                      <img
+                        src={imagePath("glyph-color.svg")}
+                        alt="Shopify"
+                        width="30"
+                        height="30"
+                      />
+                    </span>
+                    <span className="badge-text">
+                      Registered Shopify Partner
+                    </span>
+                  </div>
                   <h1>
                     Professional{" "}
                     <span className="highlight">Shopify Store Development</span>{" "}
@@ -210,7 +224,8 @@ export default function ContactforBusiness() {
                   </div>
 
                   <div className="cta-button-row">
-                    <a id="hero-get-free-consultation-button" 
+                    <a
+                      id="hero-get-free-consultation-button"
                       href="#contact-top-form-wrapper"
                       onClick={handleConsultationScroll}
                       className="cta-btn-custom cta-btn-primary"
@@ -220,7 +235,8 @@ export default function ContactforBusiness() {
                       </span>
                     </a>
 
-                    <a id="hero-view-our-work-button" 
+                    <a
+                      id="hero-view-our-work-button"
                       href="#portfolio"
                       className="cta-btn-custom cta-btn-primary"
                     >
@@ -568,6 +584,23 @@ export default function ContactforBusiness() {
                   AM - 7:30 PM IST
                 </div>
               </div>
+              {/* address bottom start */}
+              <div className="desktop-menu-contact__item desktop-menu-contact__item--address">
+                <a
+                  id="desktop-footer-address"
+                  href="https://maps.app.goo.gl/BpcrHjHfE8Da6WcP9"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="desktop-menu-contact__item desktop-menu-contact__item--address"
+                >
+                  <FaLocationDot />
+                  <span>
+                    C-344, 3rd Floor, Oshiwara Industrial Centre, Off New Link
+                    Rd, Goregaon (West), Mumbai, Maharashtra 400104
+                  </span>
+                </a>
+              </div>
+              {/* address bottom end */}
             </div>
           </section>
         </div>
