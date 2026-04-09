@@ -43,7 +43,10 @@ export default function LPClientTestimonialsMarquee({
   const SWIPE_THRESHOLD = 50;
 
   const getInitials = (name = "") => {
-    const parts = name.trim().split(" ").filter(Boolean);
+    const parts = name
+      .trim()
+      .split(" ")
+      .filter(Boolean);
     if (!parts.length) return "";
     if (parts.length === 1) return parts[0][0].toUpperCase();
     return parts[0][0].toUpperCase() + parts[parts.length - 1][0].toUpperCase();
@@ -408,10 +411,6 @@ export default function LPClientTestimonialsMarquee({
                         </div>
 
                         <div className="lpctm-quoteWrap">
-                          <div className="lpctm-quoteMark" aria-hidden>
-                            "
-                          </div>
-
                           <p className="lpctm-quote">{t.quote}</p>
 
                           <div
