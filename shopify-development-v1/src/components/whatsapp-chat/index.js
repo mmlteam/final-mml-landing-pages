@@ -6,7 +6,7 @@ export default function WhatsApp() {
     <>
       {/* whatsapp chat start */}
       <div className="whatsapp-chat">
-        <a href="https://wa.me/9136651479" target="_blank">
+        <a id="whatsapp-phone" href="https://wa.me/9136651479" target="_blank">
           <img src={imagePath("whatsapp-icon.gif")} alt="whatsapp" />
         </a>
       </div>

@@ -21,11 +21,14 @@ const LandingContactForm = () => {
   const [buttonClass, setButtonClass] = useState("");
 
   const budgetOptions = [
-    { value: "50k-1l", label: "₹50,000 - ₹1,00,000" },
-    { value: "1l-2.5l", label: "₹1,00,000 - ₹2,50,000" },
-    { value: "2.5l-5l", label: "₹2,50,000 - ₹5,00,000" },
-    { value: "above5l", label: "Above ₹5,00,000" },
-    { value: "discuss", label: "I need to discuss my requirements" },
+    { value: "50k-1Lakh", label: "₹50,000 - ₹1,00,000" },
+    { value: "1Lakh-2.5Lakh", label: "₹1,00,000 - ₹2,50,000" },
+    { value: "2.5Lakh-5Lakh", label: "₹2,50,000 - ₹5,00,000" },
+    { value: "above 5Lakh", label: "Above ₹5,00,000" },
+    {
+      value: "I need to discuss my requirements",
+      label: "I need to discuss my requirements",
+    },
   ];
 
   const validateUsername = (fname) => {
@@ -121,64 +124,71 @@ const LandingContactForm = () => {
   }, [firstName, phone, budget, fnameValidate, phoneValidate, budgetValidate]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (formValid || loader) return;
+  if (formValid || loader) return;
 
-    try {
-      setLoader(true);
-      setButtonText("Submitting...");
-      setButtonClass("loading");
+  try {
+    setLoader(true);
+    setButtonText("Submitting...");
+    setButtonClass("loading");
 
-      const data = {
-        fname: firstName,
-        email: "",
-        message: `Budget: ${budget}`,
-        phone: phone,
-        page: "contact",
-        budget: budget,
-      };
+    const data = {
+      fname: firstName,
+      email: "",
+      message: `Budget: ${budget}`,
+      phone: phone,
+      page: "contact",
+      budget: budget,
+    };
 
-      const [response1, response2] = await axios.all([
-        axios.post("/sendmail", {
-          timeout: 2000,
-          data: {
-            fname: firstName,
-            email: "",
-            message: `Budget: ${budget}`,
-            phone: phone,
-            checkbox: false,
-            page: "contact",
-            budget: budget,
-          },
-        }),
-        axios.post("https://api.mmlprojects.in/formdata.php", data, {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }),
-      ]);
+    const [response1, response2] = await axios.all([
+      axios.post("/sendmail", {
+        timeout: 2000,
+        data: {
+          ...data,
+          checkbox: false,
+        },
+      }),
+      axios.post("https://api.mmlprojects.in/formdata.php", data, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }),
+    ]);
 
-      if (response1.status) {
-        setLoader(false);
-        setThankyoumsg("Message Sent.");
-        setButtonText("Message Sent. We will reply you soon!");
-        setButtonClass("sent-msg");
-        resetForm();
-      } else {
-        setLoader(false);
-        setThankyoumsg("");
-        setButtonText("Something went wrong. Sorry!");
-        setButtonClass("");
-      }
-    } catch (error) {
-      console.log(error);
+    // Check for a successful status (usually 200)
+    if (response1.status === 200 || response1.status === "success") {
+      
+      // --- DATA LAYER PUSH START ---
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "footer_form_submission_success_message", // Keep this name same as the Landing form
+        form_name: "footer_contact_form", // Change this to identify the source
+        form_location: "footer",
+        user_budget: budget
+      });
+      // --- DATA LAYER PUSH END ---
+
+      setLoader(false);
+      setThankyoumsg("Message Sent.");
+      setButtonText("Message Sent. We will reply you soon!");
+      setButtonClass("sent-msg");
+      resetForm();
+    } else {
       setLoader(false);
       setThankyoumsg("");
       setButtonText("Something went wrong. Sorry!");
       setButtonClass("");
     }
-  };
+  } catch (error) {
+    console.log(error);
+    setLoader(false);
+    setThankyoumsg("");
+    setButtonText("Something went wrong. Sorry!");
+    setButtonClass("");
+  }
+};
 
   return (
     <div className="contact-form-wrapper">
@@ -220,7 +230,7 @@ const LandingContactForm = () => {
           label="Your Budget Range *"
           value={budget}
           fieldName="budget"
-          className="field"
+          className="field selected-field"
           placeholder="Select your budget *"
           selectField={true}
           options={budgetOptions}
@@ -238,7 +248,11 @@ const LandingContactForm = () => {
           {loader ? "Submitting..." : buttonText}
         </button>
 
-        {thankyoumsg && <div className="success-message">{thankyoumsg}</div>}
+        {thankyoumsg && (
+          <div id="footer-form-success-message" className="success-message">
+            {thankyoumsg}
+          </div>
+        )}
       </form>
 
       <div className="form-trust">

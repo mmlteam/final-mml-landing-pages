@@ -10,13 +10,17 @@ export default function Navigation() {
     <header id="get-started" className="main-head-wrap">
       <div className="menu-wrapper">
         <div className="logo-wrapper">
-          <Link to="/">
+          <Link to="/" id="header-logo">
             <img src={imagePath("logo.png")} alt="logo" />
           </Link>
         </div>
 
         <div className="phone-wrap-menu">
-          <a className="phone-icon-menu" href="tel:+9136651479">
+          <a
+            id="mobile-header-phone"
+            className="phone-icon-menu phone-ring-icon"
+            href="tel:+91 9136651479"
+          >
             <FaPhoneAlt fill="#fff" />
           </a>
         </div>

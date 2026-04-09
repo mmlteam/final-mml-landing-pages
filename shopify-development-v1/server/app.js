@@ -21,16 +21,16 @@ app.use(bodyParser.json());
 app.use(
   PUBLIC_URL,
   express.static(path.resolve(__dirname, "../build"), {
-    maxage: Infinity
-  })
+    maxage: Infinity,
+  }),
 );
 
 // Serve static assets in /public
 app.use(
   PUBLIC_URL,
   express.static(path.resolve(__dirname, "../public"), {
-    maxage: "30 days"
-  })
+    maxage: "30 days",
+  }),
 );
 
 app.use(morgan("tiny"));
@@ -38,74 +38,47 @@ app.use(morgan("tiny"));
 // Demo API endpoints
 app.post("/sendmail", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
+
+  const { fname, email, phone, message, page } = req.body.data;
+
   const htmlEmail = `
-  <p>name : ${req.body.data.fname}</p>
-  <p>email : ${req.body.data.email}</p>
-  <p>phone : ${req.body.data.phone}</p>
-  <p>message : ${req.body.data.message}</p>
-`;
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  const msg = {
-    // to: "sharik@makemelive.in, ershaikhsharik@gmail.com", // Change to your recipient
-    to: ["sharik@makemelive.in", "ershaikhsharik@gmail.com"],
-    from: "support@makemelive.in", // Change to your verified sender
-    subject: "Lead Enquiry",
-    text: "and easy to do anywhere, even with Node.js",
-    html: htmlEmail
+    <h3>New Lead from: ${page || "Website"}</h3>
+    <p><b>Name:</b> ${fname}</p>
+    <p><b>Email:</b> ${email}</p>
+    <p><b>Phone:</b> ${phone}</p>
+    <p><b>Message:</b> ${message}</p>
+  `;
+
+  const mailOption = {
+    from: process.env.GMAIL_USER,
+    to: [
+      "sharik@makemelive.in",
+      "ershaikhsharik@gmail.com",
+      "connect@makemelive.in",
+      "nitin.tambe@makemelive.in",
+    ],
+    cc: "",
+    subject: `New Lead Enquiry - ${page || "Website"}`,
+    text: `Name: ${fname}, Phone: ${phone}, Email: ${email}, Message: ${message}`,
+    html: htmlEmail,
   };
-  // sgMail
-  //   .send(msg)
-  //   .then(() => {
-  //     console.log('Email sent')
-  //   })
-  //   .catch((error) => {
-  //     console.error(error)
-  //   })
 
   try {
-    const result = await sgMail.send(msg);
-    res.json({
-      status: true,
-      payload: result
-    });
+    const result = await sendEmail(mailOption);
+    res.json({ status: true, payload: result });
   } catch (error) {
     console.error(error.message);
     res.json({
       status: false,
-      payload: "Something went wrong in Sendmail Route."
+      payload: "Something went wrong in Sendmail Route.",
     });
   }
-  //     let mailOption = {
-  //     from: req.body.data.email,
-  //     to: ["sharik@makemelive.in, rupesh@makemelive.in"],
-  //     cc: "support@makemelive.in",
-  //     replyTo: req.body.data.email,
-  //     subject: "Contact form enquiry",
-  //     text: req.body.data.message,
-  //     html: htmlEmail
-  //   };
-
-  // try {
-  // const result = await sendEmail(mailOption);
-  //  // send the response
-  //  res.json({
-  //    status: true,
-  //     payload: result,
-  //   });
-  // } catch (error) {
-  //   console.error(error.message);
-  //   res.json({
-  //    status: false,
-  //     payload: "Something went wrong in Sendmail Route.",
-  //   });
-  // }
 });
-
 app.use(
   responseTime((_req, res, time) => {
     res.setHeader("X-Response-Time", time.toFixed(2) + "ms");
     res.setHeader("Server-Timing", `renderServerSideApp;dur=${time}`);
-  })
+  }),
 );
 
 app.use(renderServerSideApp);

@@ -9,6 +9,10 @@
   padding: 0 20px;
 }
 
+.form-field.form-bottom-field {
+  text-align: left;
+}
+
 .field {
   width: 100%;
   max-width: 100%;
@@ -37,6 +41,19 @@ label.label {
   line-height: 1;
   margin-bottom: 1em;
 }
+
+select.field.selected-field {
+  text-align: left;
+  text-align-last: left;
+  -moz-text-align-last: left;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+select.field.selected-field option {
+  text-align: left;
+}
+
 button {
   &.submit-button {
     font-size: 12px;
@@ -83,4 +100,8 @@ button {
       font-weight: bold;
     }
   }
+}
+
+.bottom-submit-btn {
+  background-color: #ffffff;
 }

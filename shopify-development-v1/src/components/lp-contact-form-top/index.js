@@ -24,11 +24,14 @@ const LandingContactForm = () => {
   const [buttonClass, setButtonClass] = useState("");
 
   const budgetOptions = [
-    { value: "50k-1l", label: "₹50,000 - ₹1,00,000" },
-    { value: "1l-2.5l", label: "₹1,00,000 - ₹2,50,000" },
-    { value: "2.5l-5l", label: "₹2,50,000 - ₹5,00,000" },
-    { value: "above5l", label: "Above ₹5,00,000" },
-    { value: "discuss", label: "I need to discuss my requirements" },
+    { value: "50k-1Lakh", label: "₹50,000 - ₹1,00,000" },
+    { value: "1Lakh-2.5Lakh", label: "₹1,00,000 - ₹2,50,000" },
+    { value: "2.5Lakh-5Lakh", label: "₹2,50,000 - ₹5,00,000" },
+    { value: "above 5Lakh", label: "Above ₹5,00,000" },
+    {
+      value: "I need to discuss my requirements",
+      label: "I need to discuss my requirements",
+    },
   ];
 
   const validateUsername = (fname) => {
@@ -124,72 +127,73 @@ const LandingContactForm = () => {
   }, [firstName, phone, budget, fnameValidate, phoneValidate, budgetValidate]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (formValid || loader) return;
+  if (formValid || loader) return;
 
-    try {
-      setLoader(true);
-      setButtonText("Submitting...");
-      setButtonClass("loading");
-      if (!executeRecaptcha) {
-        throw new Error("reCAPTCHA not ready");
-      }
-      const recaptchaToken = await executeRecaptcha("contact_form");
+  try {
+    setLoader(true);
+    setButtonText("Submitting...");
+    setButtonClass("loading");
 
-      const data = {
-        fname: firstName,
-        email: "",
-        message: `Budget: ${budget}`,
-        phone: phone,
-        page: "contact",
-        budget: budget,
-        recaptchaToken: recaptchaToken,
-        recaptchaAction: "contact_form",
-      };
+    if (!executeRecaptcha) {
+      throw new Error("reCAPTCHA not ready");
+    }
+    const recaptchaToken = await executeRecaptcha("contact_form");
 
-      const [response1, response2] = await axios.all([
-        axios.post("/sendmail", {
-          timeout: 2000,
-          data: {
-            fname: firstName,
-            email: "",
-            message: `Budget: ${budget}`,
-            phone: phone,
-            checkbox: false,
-            page: "contact",
-            budget: budget,
-            recaptchaToken: recaptchaToken,
-            recaptchaAction: "contact_form",
-          },
-        }),
-        axios.post("https://api.mmlprojects.in/formdata.php", data, {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }),
-      ]);
+    const data = {
+      fname: firstName,
+      email: "",
+      message: `Budget: ${budget}`,
+      phone: phone,
+      page: "contact",
+      budget: budget,
+      recaptchaToken: recaptchaToken,
+      recaptchaAction: "contact_form",
+    };
 
-      if (response1.status) {
-        setLoader(false);
-        setThankyoumsg("Message Sent.");
-        setButtonText("Message Sent. We will reply you soon!");
-        setButtonClass("sent-msg");
-        resetForm();
-      } else {
-        setLoader(false);
-        setThankyoumsg("");
-        setButtonText("Something went wrong. Sorry!");
-        setButtonClass("");
-      }
-    } catch (error) {
-      console.log(error);
+    const [response1, response2] = await axios.all([
+      axios.post("/sendmail", {
+        timeout: 2000,
+        data: data,
+      }),
+      axios.post("https://api.mmlprojects.in/formdata.php", data, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }),
+    ]);
+
+    // --- MODIFIED SECTION START ---
+    if (response1.status === 200 || response1.status === "success") { 
+      
+      // 1. Push to DataLayer Immediately
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "header_form_submission_success_message", // This is your trigger name in GTM
+        form_name: "header_landing_contact_form",
+        user_budget: budget
+      });
+
+      setLoader(false);
+      setThankyoumsg("Message Sent.");
+      setButtonText("Message Sent. We will reply you soon!");
+      setButtonClass("sent-msg");
+      resetForm();
+    } 
+    // --- MODIFIED SECTION END ---
+    else {
       setLoader(false);
       setThankyoumsg("");
       setButtonText("Something went wrong. Sorry!");
       setButtonClass("");
     }
-  };
+  } catch (error) {
+    console.log(error);
+    setLoader(false);
+    setButtonText("Something went wrong. Sorry!");
+  }
+};
 
   return (
     <div className="contact-form-wrapper">
@@ -249,7 +253,11 @@ const LandingContactForm = () => {
           {loader ? "Submitting..." : buttonText}
         </button>
 
-        {thankyoumsg && <div className="success-message">{thankyoumsg}</div>}
+        {thankyoumsg && (
+          <div id="header-form-success-message" className="success-message">
+            {thankyoumsg}
+          </div>
+        )}
       </form>
 
       <div className="form-trust">

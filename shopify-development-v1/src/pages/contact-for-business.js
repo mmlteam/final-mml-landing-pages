@@ -54,11 +54,8 @@ export default function ContactforBusiness() {
   const handleConsultationScroll = (e) => {
     e.preventDefault();
 
-    const banner = document.getElementById("consultation-banner");
-    if (!banner) return;
-
-    const currentScroll =
-      window.pageYOffset || document.documentElement.scrollTop;
+    const formTarget = document.getElementById("contact-top-form-wrapper");
+    if (!formTarget) return;
 
     const header =
       document.querySelector(".site-header") ||
@@ -66,15 +63,16 @@ export default function ContactforBusiness() {
       document.querySelector("header");
 
     const headerHeight = header ? header.offsetHeight : 0;
-    const bannerTop = banner.getBoundingClientRect().top + window.pageYOffset;
 
-    // Agar user already top/banner zone me hai to scroll mat karo
-    if (currentScroll <= bannerTop + 20) {
-      return;
-    }
+    const extraOffset = 16; // thoda breathing space
+    const targetTop =
+      formTarget.getBoundingClientRect().top +
+      window.pageYOffset -
+      headerHeight -
+      extraOffset;
 
     window.scrollTo({
-      top: bannerTop - headerHeight,
+      top: targetTop,
       behavior: "smooth",
     });
   };
@@ -212,8 +210,8 @@ export default function ContactforBusiness() {
                   </div>
 
                   <div className="cta-button-row">
-                    <a
-                      href="#consultation-banner"
+                    <a id="hero-get-free-consultation-button" 
+                      href="#contact-top-form-wrapper"
                       onClick={handleConsultationScroll}
                       className="cta-btn-custom cta-btn-primary"
                     >
@@ -222,7 +220,7 @@ export default function ContactforBusiness() {
                       </span>
                     </a>
 
-                    <a
+                    <a id="hero-view-our-work-button" 
                       href="#portfolio"
                       className="cta-btn-custom cta-btn-primary"
                     >
@@ -299,7 +297,10 @@ export default function ContactforBusiness() {
               <div className="col-md-12 col-xs-12">
                 <div class="section-header">
                   <h2>Why Choose Makemelive for Shopify Development?</h2>
-                  <p>Tailored solutions built around your business goals</p>
+                  <p>
+                    Tailored solutions built around your{" "}
+                    <span class="mobile-break"></span> business goals
+                  </p>
                 </div>
                 <div class="features-grid">
                   <div class="feature-card">
@@ -495,94 +496,6 @@ export default function ContactforBusiness() {
           </div>
         </section>
         {/* simple transparent process section end */}
-        {/* fold 8 company experience port section start */}
-        {/* <section className="fold8 our-experience-wrapper">
-          <div className="container">
-            <div className="row justify-content-center">
-              <div className="col-md-5 col-xs-12">
-                <div className="modern-number-year">
-                  <div className="company-experience-wrap">
-                    <h2>
-                      <span className="mark-txt">15</span>+ Years of Excellence.
-                    </h2>
-                  </div>
-                  <div className="company-success-story">
-                    <h3>150+ Happy Clients.</h3>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-7 col-xs-12">
-                <div className="row justify-content-center hide-counter-mob">
-                  <div className="col-md-6 col-xs-12">
-                    <div className="counter align-center">
-                      <span className="counter-number">
-                        <CountUp end={300} />
-                      </span>
-                      <h6 className="counter-details">ACTIVE AMC'S</h6>
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-xs-12">
-                    <div className="counter align-center">
-                      <span className="counter-number">
-                        <CountUp end={2000} />
-                      </span>
-                      <h6 className="counter-details">FINISHED PROJECTS</h6>
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-xs-12">
-                    <div className="counter align-center">
-                      <span className="counter-number">
-                        <CountUp end={500} />
-                      </span>
-                      <h6 className="counter-details">HAPPY CLIENTS</h6>
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-xs-12">
-                    <div className="counter align-center">
-                      <span className="counter-number">
-                        <CountUp end={5} />
-                      </span>
-                      <h6 className="counter-details">COUNTRIES SERVED</h6>
-                    </div>
-                  </div>
-                </div>
-                <div className="our-experience-mob-main-wrap">
-                  <div className="experience-wrap-mobile-counter">
-                    <div className="counter-wrap">
-                      <div className="counter align-center divider-line">
-                        <span className="counter-number">
-                          <CountUp end={200} />
-                        </span>
-                        <h6 className="counter-details">ACTIVE AMC'S</h6>
-                      </div>
-                      <div className="counter align-center divider-line">
-                        <span className="counter-number">
-                          <CountUp end={300} />
-                        </span>
-                        <h6 className="counter-details">FINISHED PROJECTS</h6>
-                      </div>
-                    </div>
-                    <div className="counter-wrap">
-                      <div className="counter align-center">
-                        <span className="counter-number">
-                          <CountUp end={300} />
-                        </span>
-                        <h6 className="counter-details">HAPPY CLIENTS</h6>
-                      </div>
-                      <div className="counter align-center">
-                        <span className="counter-number">
-                          <CountUp end={18} />
-                        </span>
-                        <h6 className="counter-details">BLOG POSTS</h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section> */}
-        {/* fold 8 company experience port section end */}
         {/* faq section start */}
         <section className="fold10" id="faq">
           <div className="container">
@@ -636,16 +549,18 @@ export default function ContactforBusiness() {
               </div>
               <div class="contact-info">
                 <div class="contact-item">
-                  <FaPhoneAlt /> <a href="tel:+91 9136651479">+91 9136651479</a>
+                  <a id="footer-phone" href="tel:+91 9136651479">
+                    <FaPhoneAlt /> +91 9136651479
+                  </a>
                 </div>
                 <div class="contact-item">
-                  <CiMail />{" "}
                   <a
+                    id="footer-email"
                     href="mailto:nitin.tambe@makemelive.in"
                     class="__cf_email__"
                     // data-cfemail="26554e47544f4d664b474d434b434a4f5043084f48"
                   >
-                    nitin.tambe@makemelive.in
+                    <CiMail /> nitin.tambe@makemelive.in
                   </a>
                 </div>
                 <div class="contact-item">
@@ -658,11 +573,9 @@ export default function ContactforBusiness() {
         </div>
         {/* contact form section end */}
 
-        {/* contact form section end */}
-
         {/* button right side fixed start */}
         <div className="switcher-tab-btn">
-          <a href="tel:9136651479">
+          <a id="sticky-phone" href="tel:9136651479">
             <button className="call-btn">
               <span className="ico-txt">Call Now</span>
               <span className="ico">
@@ -673,7 +586,7 @@ export default function ContactforBusiness() {
         </div>
 
         <div className="switcher-tab-btn">
-          <a href="#landing-form">
+          <a id="sticky-enquire-now" href="#landing-form">
             <button className="form-btn-enquiry">
               <span className="ico-txt">Enquire Now</span>
               <span className="ico">
@@ -684,9 +597,9 @@ export default function ContactforBusiness() {
         </div>
 
         <div className="switcher-tab-btn">
-          <a href="mailto:nitin.tambe@makemelive.in">
+          <a id="sticky-email" href="mailto:nitin.tambe@makemelive.in">
             <button className="btn-services-quote">
-              <span className="ico-txt">Connect</span>
+              <span className="ico-txt">Email Us</span>
               <span className="ico">
                 <BiMailSend />
               </span>

@@ -70,6 +70,66 @@ button {
   }
 }
 
+select.field,
+.select-field {
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+  height: 50px;
+  margin-bottom: 30px;
+  border: 1px solid #dddddd;
+  background: transparent;
+  outline: none;
+  margin: 0 10px 20px 0;
+  color: #222222;
+  text-align-last: center;
+  border-radius: 12px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  font-family: inherit;
+  @include respond-until(sm) {
+    margin: 0 0 10px 0;
+  }
+}
+
+.select-field.has-value {
+  color: #222222;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  text-align-last: center;
+  border-radius: 12px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+}
+
+.select-field option,
+select.field option {
+  color: #222222;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/* Safari/iPhone fix */
+@supports (-webkit-touch-callout: none) {
+  .select-field.is-placeholder {
+    text-align: center;
+    text-align-last: center;
+  }
+
+  .select-field.has-value {
+    text-align: center;
+    text-align-last: center;
+  }
+}
+
 .form-trust {
   margin-top: 1rem;
   padding-top: 1rem;

@@ -8,9 +8,15 @@ import WhatsApp from "../components/whatsapp-chat";
 
 const App = () => {
   useEffect(() => {
-    const basePath = "/shopify-development-v1";
+    const basePath = (process.env.PUBLIC_URL || "").replace(/\/+$/, "");
+
+    if (!basePath) {
+      return;
+    }
+
+    const currentPath = window.location.pathname.replace(/\/+$/, "");
     const isWrongPath =
-      window.location.pathname !== basePath ||
+      currentPath !== basePath ||
       window.location.search !== "" ||
       window.location.hash !== "";
 
