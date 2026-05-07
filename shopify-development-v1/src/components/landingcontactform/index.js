@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import FormField from "./FormField";
 import axios from "axios";
 import "./contactform.scss";
-
+import { getLeadMeta } from "../../utils/getLeadMeta";
 const LandingContactForm = () => {
   const [firstName, setFirstName] = useState("");
   const [budget, setBudget] = useState("");
@@ -132,14 +132,15 @@ const LandingContactForm = () => {
     setLoader(true);
     setButtonText("Submitting...");
     setButtonClass("loading");
-
+    const meta = await getLeadMeta();
     const data = {
       fname: firstName,
       email: "",
       message: `Budget: ${budget}`,
       phone: phone,
-      page: "contact",
+      page: "Get Started (Footer Form)",
       budget: budget,
+      moreInfo: `IP: ${meta.ip} | Location: ${meta.city}, ${meta.country} | Date: ${meta.date} | Time: ${meta.time} IST | Device: ${meta.deviceName} (${meta.deviceType})`,
     };
 
     const [response1, response2] = await axios.all([

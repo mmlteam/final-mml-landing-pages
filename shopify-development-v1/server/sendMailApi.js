@@ -3,16 +3,15 @@ import nodemailer from "nodemailer";
 const sendEmail = async (mailObj) => {
   const { from, to, cc, subject, text, html } = mailObj;
 
-  let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD,
-    },
-  });
-
+ let transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD,
+  },
+});
   let info = await transporter.sendMail({
     from,
     to,

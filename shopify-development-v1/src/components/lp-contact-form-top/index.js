@@ -3,7 +3,7 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import FormField from "./FormField";
 import axios from "axios";
 import "./contactform.scss";
-
+import { getLeadMeta } from "../../utils/getLeadMeta";
 const LandingContactForm = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
 
@@ -140,14 +140,15 @@ const LandingContactForm = () => {
       throw new Error("reCAPTCHA not ready");
     }
     const recaptchaToken = await executeRecaptcha("contact_form");
-
+    const meta = await getLeadMeta();
     const data = {
       fname: firstName,
       email: "",
       message: `Budget: ${budget}`,
       phone: phone,
-      page: "contact",
+      page: "Get Your Free Consultation (Header Form)",
       budget: budget,
+      moreInfo: `IP: ${meta.ip} | Location: ${meta.city}, ${meta.country} | Date: ${meta.date} | Time: ${meta.time} IST | Device: ${meta.deviceName} (${meta.deviceType})`,
       recaptchaToken: recaptchaToken,
       recaptchaAction: "contact_form",
     };
