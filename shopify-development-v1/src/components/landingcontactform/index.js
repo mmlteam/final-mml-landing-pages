@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import FormField from "./FormField";
 import axios from "axios";
 import "./contactform.scss";
@@ -17,8 +18,9 @@ const LandingContactForm = () => {
 
   const [formValid, setFormValid] = useState(true);
   const [errorMsg, setErrorMsg] = useState({});
-  const [buttonText, setButtonText] = useState("Get My Free Consultation →");
+  const [buttonText, setButtonText] = useState("Get Free Consultation →");
   const [buttonClass, setButtonClass] = useState("");
+  const history = useHistory();
 
   const budgetOptions = [
     { value: "50k-1Lakh", label: "₹50,000 - ₹1,00,000" },
@@ -103,7 +105,7 @@ const LandingContactForm = () => {
     setErrorMsg({});
 
     setTimeout(() => {
-      setButtonText("Get My Free Consultation →");
+      setButtonText("Get Free Consultation →");
       setButtonClass("");
       setThankyoumsg("");
     }, 5000);
@@ -124,72 +126,72 @@ const LandingContactForm = () => {
   }, [firstName, phone, budget, fnameValidate, phoneValidate, budgetValidate]);
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (formValid || loader) return;
+    if (formValid || loader) return;
 
-  try {
-    setLoader(true);
-    setButtonText("Submitting...");
-    setButtonClass("loading");
-    const meta = await getLeadMeta();
-    const data = {
-      fname: firstName,
-      email: "",
-      message: `Budget: ${budget}`,
-      phone: phone,
-      page: "Get Started (Footer Form)",
-      budget: budget,
-      moreInfo: `IP: ${meta.ip} | Location: ${meta.city}, ${meta.country} | Date: ${meta.date} | Time: ${meta.time} IST | Device: ${meta.deviceName} (${meta.deviceType})`,
-    };
+    try {
+      setLoader(true);
+      setButtonText("Submitting...");
+      setButtonClass("loading");
+      const meta = await getLeadMeta();
+      const data = {
+        fname: firstName,
+        email: "",
+        message: `Budget: ${budget}`,
+        phone: phone,
+        page: "Get Started (Footer Form)",
+        budget: budget,
+        moreInfo: `IP: ${meta.ip} | Location: ${meta.city}, ${meta.country} | Date: ${meta.date} | Time: ${meta.time} IST | Device: ${meta.deviceName} (${meta.deviceType})`,
+      };
 
-    const [response1, response2] = await axios.all([
-      axios.post("/sendmail", {
-        timeout: 2000,
-        data: {
-          ...data,
-          checkbox: false,
-        },
-      }),
-      axios.post("https://api.mmlprojects.in/formdata.php", data, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }),
-    ]);
+      const [response1, response2] = await axios.all([
+        axios.post("/sendmail", {
+          timeout: 2000,
+          data: {
+            ...data,
+            checkbox: false,
+          },
+        }),
+        axios.post("https://api.mmlprojects.in/formdata.php", data, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }),
+      ]);
 
-    // Check for a successful status (usually 200)
-    if (response1.status === 200 || response1.status === "success") {
-      
-      // --- DATA LAYER PUSH START ---
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: "footer_form_submission_success_message", // Keep this name same as the Landing form
-        form_name: "footer_contact_form", // Change this to identify the source
-        form_location: "footer",
-        user_budget: budget
-      });
-      // --- DATA LAYER PUSH END ---
+      // Check for a successful status (usually 200)
+      if (response1.status === 200 || response1.status === "success") {
+        // --- DATA LAYER PUSH START ---
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "footer_form_submission_success_message", // Keep this name same as the Landing form
+          form_name: "footer_contact_form", // Change this to identify the source
+          form_location: "footer",
+          user_budget: budget,
+        });
+        // --- DATA LAYER PUSH END ---
 
-      setLoader(false);
-      setThankyoumsg("Message Sent.");
-      setButtonText("Message Sent. We will reply you soon!");
-      setButtonClass("sent-msg");
-      resetForm();
-    } else {
+        setLoader(false);
+        setThankyoumsg("Message Sent.");
+        setButtonText("Message Sent. We will reply you soon!");
+        setButtonClass("sent-msg");
+        resetForm();
+        history.push("/thankyou");
+      } else {
+        setLoader(false);
+        setThankyoumsg("");
+        setButtonText("Something went wrong. Sorry!");
+        setButtonClass("");
+      }
+    } catch (error) {
+      console.log(error);
       setLoader(false);
       setThankyoumsg("");
       setButtonText("Something went wrong. Sorry!");
       setButtonClass("");
     }
-  } catch (error) {
-    console.log(error);
-    setLoader(false);
-    setThankyoumsg("");
-    setButtonText("Something went wrong. Sorry!");
-    setButtonClass("");
-  }
-};
+  };
 
   return (
     <div className="contact-form-wrapper">

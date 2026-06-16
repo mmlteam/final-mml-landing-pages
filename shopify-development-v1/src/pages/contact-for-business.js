@@ -572,11 +572,11 @@ export default function ContactforBusiness() {
                 <div class="contact-item">
                   <a
                     id="footer-email"
-                    href="mailto:nitin.tambe@makemelive.in"
+                    href="mailto:connect@makemelive.in"
                     class="__cf_email__"
                     // data-cfemail="26554e47544f4d664b474d434b434a4f5043084f48"
                   >
-                    <CiMail /> nitin.tambe@makemelive.in
+                    <CiMail /> connect@makemelive.in
                   </a>
                 </div>
                 <div class="contact-item">

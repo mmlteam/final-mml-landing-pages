@@ -1,0 +1,62 @@
+@import '../../styles/mixins';
+.thankyou-wrapper{
+    margin-top: 150px;
+    @include respond-until(sm) {
+        margin-top: 130px;
+    }
+    .check-sign{
+        svg{
+            font-size: 50px;
+            border: 5px solid #8fc54c;
+            fill: #8fc54c;
+            width: 100px;
+            height: 100px;
+            padding: 20px;
+            border-radius: 50%;
+            box-shadow: 0 0 40px #3333331a;
+        }
+    }
+
+    .thankyou-title {
+        margin: 3.5em 0;
+        @include respond-until(sm) {
+            margin: 2.3em 0;
+        }
+        h2 {
+            font-size: 5em;
+            @include respond-until(sm) {
+                font-size: 2.8em;
+            }
+        }
+    }
+
+    .thankyou-subtitle{
+        p{
+            font-size: 18px;
+            color: #000;
+            font-weight: 500;
+            line-height: 25px;
+            @include respond-until(sm) {
+                font-size: 16px;
+            }
+        }
+    }
+    .thankyou-desc{
+        p{
+            font-size: 18px;
+            color: #000;
+            font-weight: 500;
+            line-height: 25px;
+            @include respond-until(sm) {
+                font-size: 16px;
+            }
+        a{
+            font-weight: 500;
+        }
+        }
+        .custom-redirect-content{
+            border-top: 2px solid #8fc54c;
+            padding-top: 20px;
+        }
+    }
+}

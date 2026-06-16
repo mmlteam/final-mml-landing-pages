@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import FormField from "./FormField";
 import axios from "axios";
 import "./audit-popup-form.scss";
@@ -15,9 +16,10 @@ const AuditPopupForm = ({ onSuccess }) => {
 
   const [thankyoumsg, setThankyoumsg] = useState("");
   const [buttonText, setButtonText] = useState(
-    "Book My Free Audit + Consultation →",
+    "Book Free Audit + Consultation →",
   );
   const [buttonClass, setButtonClass] = useState("");
+  const history = useHistory();
 
   const validateName = (value) => {
     const trimmedValue = value.trim();
@@ -61,7 +63,7 @@ const AuditPopupForm = ({ onSuccess }) => {
 
   const resetFormState = () => {
     setTimeout(() => {
-      setButtonText("Book My Free Audit + Consultation →");
+      setButtonText("Book Free Audit + Consultation →");
       setButtonClass("");
       setThankyoumsg("");
     }, 5000);
@@ -79,7 +81,7 @@ const AuditPopupForm = ({ onSuccess }) => {
       setLoading(true);
       setButtonText("Submitting...");
       setButtonClass("loading");
-      const meta = await getLeadMeta();     
+      const meta = await getLeadMeta();
       // We use axios.all to send to both your mailer and your database API
       const [response1] = await axios.all([
         axios.post("/sendmail", {
@@ -96,14 +98,18 @@ const AuditPopupForm = ({ onSuccess }) => {
           },
         }),
         // Optional: Adding your database API call to match landing/footer forms
-        axios.post("https://api.mmlprojects.in/formdata.php", {
-          fname: name,
-          phone: phone,
-          page: "audit-popup (Landing Page)",
-          message: "Audit popup lead"
-        }, {
-          headers: { "Content-Type": "application/x-www-form-urlencoded" }
-        }),
+        axios.post(
+          "https://api.mmlprojects.in/formdata.php",
+          {
+            fname: name,
+            phone: phone,
+            page: "audit-popup (Landing Page)",
+            message: "Audit popup lead",
+          },
+          {
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          },
+        ),
       ]);
 
       // --- DATA LAYER PUSH START ---
@@ -113,7 +119,7 @@ const AuditPopupForm = ({ onSuccess }) => {
         event: "pop_up_form_submission_success_message", // Same trigger name for GTM
         form_name: "pop_up_audit_popup_form",
         form_location: "popup_modal",
-        lead_type: "audit_request"
+        lead_type: "audit_request",
       });
       // --- DATA LAYER PUSH END ---
 
@@ -134,6 +140,7 @@ const AuditPopupForm = ({ onSuccess }) => {
         }, 2500);
       }
 
+      history.push("/thankyou");
       resetFormState();
     } catch (err) {
       console.error("Submission error:", err);
@@ -176,7 +183,11 @@ const AuditPopupForm = ({ onSuccess }) => {
         {loading ? "Submitting..." : buttonText}
       </button>
 
-      {thankyoumsg && <div id="popup-form-success-message" className="success-message">{thankyoumsg}</div>}
+      {thankyoumsg && (
+        <div id="popup-form-success-message" className="success-message">
+          {thankyoumsg}
+        </div>
+      )}
     </form>
   );
 };

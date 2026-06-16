@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import FormField from "./FormField";
 import axios from "axios";
@@ -20,8 +21,9 @@ const LandingContactForm = () => {
 
   const [formValid, setFormValid] = useState(true);
   const [errorMsg, setErrorMsg] = useState({});
-  const [buttonText, setButtonText] = useState("Get My Free Consultation →");
+  const [buttonText, setButtonText] = useState("Get Free Consultation →");
   const [buttonClass, setButtonClass] = useState("");
+  const history = useHistory();
 
   const budgetOptions = [
     { value: "50k-1Lakh", label: "₹50,000 - ₹1,00,000" },
@@ -106,7 +108,7 @@ const LandingContactForm = () => {
     setErrorMsg({});
 
     setTimeout(() => {
-      setButtonText("Get My Free Consultation →");
+      setButtonText("Get Free Consultation →");
       setButtonClass("");
       setThankyoumsg("");
     }, 5000);
@@ -127,74 +129,74 @@ const LandingContactForm = () => {
   }, [firstName, phone, budget, fnameValidate, phoneValidate, budgetValidate]);
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (formValid || loader) return;
+    if (formValid || loader) return;
 
-  try {
-    setLoader(true);
-    setButtonText("Submitting...");
-    setButtonClass("loading");
+    try {
+      setLoader(true);
+      setButtonText("Submitting...");
+      setButtonClass("loading");
 
-    if (!executeRecaptcha) {
-      throw new Error("reCAPTCHA not ready");
-    }
-    const recaptchaToken = await executeRecaptcha("contact_form");
-    const meta = await getLeadMeta();
-    const data = {
-      fname: firstName,
-      email: "",
-      message: `Budget: ${budget}`,
-      phone: phone,
-      page: "Get Your Free Consultation (Header Form)",
-      budget: budget,
-      moreInfo: `IP: ${meta.ip} | Location: ${meta.city}, ${meta.country} | Date: ${meta.date} | Time: ${meta.time} IST | Device: ${meta.deviceName} (${meta.deviceType})`,
-      recaptchaToken: recaptchaToken,
-      recaptchaAction: "contact_form",
-    };
+      if (!executeRecaptcha) {
+        throw new Error("reCAPTCHA not ready");
+      }
+      const recaptchaToken = await executeRecaptcha("contact_form");
+      const meta = await getLeadMeta();
+      const data = {
+        fname: firstName,
+        email: "",
+        message: `Budget: ${budget}`,
+        phone: phone,
+        page: "Get Your Free Consultation (Header Form)",
+        budget: budget,
+        moreInfo: `IP: ${meta.ip} | Location: ${meta.city}, ${meta.country} | Date: ${meta.date} | Time: ${meta.time} IST | Device: ${meta.deviceName} (${meta.deviceType})`,
+        recaptchaToken: recaptchaToken,
+        recaptchaAction: "contact_form",
+      };
 
-    const [response1, response2] = await axios.all([
-      axios.post("/sendmail", {
-        timeout: 2000,
-        data: data,
-      }),
-      axios.post("https://api.mmlprojects.in/formdata.php", data, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }),
-    ]);
+      const [response1, response2] = await axios.all([
+        axios.post("/sendmail", {
+          timeout: 2000,
+          data: data,
+        }),
+        axios.post("https://api.mmlprojects.in/formdata.php", data, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }),
+      ]);
 
-    // --- MODIFIED SECTION START ---
-    if (response1.status === 200 || response1.status === "success") { 
-      
-      // 1. Push to DataLayer Immediately
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: "header_form_submission_success_message", // This is your trigger name in GTM
-        form_name: "header_landing_contact_form",
-        user_budget: budget
-      });
+      // --- MODIFIED SECTION START ---
+      if (response1.status === 200 || response1.status === "success") {
+        // 1. Push to DataLayer Immediately
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "header_form_submission_success_message", // This is your trigger name in GTM
+          form_name: "header_landing_contact_form",
+          user_budget: budget,
+        });
 
+        setLoader(false);
+        setThankyoumsg("Message Sent.");
+        setButtonText("Message Sent. We will reply you soon!");
+        setButtonClass("sent-msg");
+        resetForm();
+        history.push("/thankyou");
+      }
+      // --- MODIFIED SECTION END ---
+      else {
+        setLoader(false);
+        setThankyoumsg("");
+        setButtonText("Something went wrong. Sorry!");
+        setButtonClass("");
+      }
+    } catch (error) {
+      console.log(error);
       setLoader(false);
-      setThankyoumsg("Message Sent.");
-      setButtonText("Message Sent. We will reply you soon!");
-      setButtonClass("sent-msg");
-      resetForm();
-    } 
-    // --- MODIFIED SECTION END ---
-    else {
-      setLoader(false);
-      setThankyoumsg("");
       setButtonText("Something went wrong. Sorry!");
-      setButtonClass("");
     }
-  } catch (error) {
-    console.log(error);
-    setLoader(false);
-    setButtonText("Something went wrong. Sorry!");
-  }
-};
+  };
 
   return (
     <div className="contact-form-wrapper">
