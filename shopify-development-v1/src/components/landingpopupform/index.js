@@ -112,36 +112,50 @@ const AuditPopupForm = ({ onSuccess }) => {
         ),
       ]);
 
-      // --- DATA LAYER PUSH START ---
-      // This fires immediately so it's captured even if the user closes the tab
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: "pop_up_form_submission_success_message", // Same trigger name for GTM
-        form_name: "pop_up_audit_popup_form",
-        form_location: "popup_modal",
-        lead_type: "audit_request",
-      });
-      // --- DATA LAYER PUSH END ---
+      const sheetStatus = response1.data?.sheetStatus;
 
-      setLoading(false);
-      setThankyoumsg("Message Sent.");
-      setButtonText("Message Sent. We will reply you soon!");
-      setButtonClass("sent-msg");
+      if (sheetStatus === "success") {
+        // --- DATA LAYER PUSH START ---
+        // This fires immediately so it's captured even if the user closes the tab
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "pop_up_form_submission_success_message", // Same trigger name for GTM
+          form_name: "pop_up_audit_popup_form",
+          form_location: "popup_modal",
+          lead_type: "audit_request",
+        });
+        // --- DATA LAYER PUSH END ---
 
-      setName("");
-      setPhone("");
-      setNameError("");
-      setPhoneError("");
+        setLoading(false);
+        setThankyoumsg("Message Sent.");
+        setButtonText("Message Sent. We will reply you soon!");
+        setButtonClass("sent-msg");
 
-      if (onSuccess) {
-        // We wait 2.5s so they can see the "Message Sent" text before the popup closes
-        setTimeout(() => {
-          onSuccess();
-        }, 2500);
+        setName("");
+        setPhone("");
+        setNameError("");
+        setPhoneError("");
+
+        if (onSuccess) {
+          // We wait 2.5s so they can see the "Message Sent" text before the popup closes
+          setTimeout(() => {
+            onSuccess();
+          }, 2500);
+        }
+
+        history.push("/thankyou");
+        resetFormState();
+      } else if (sheetStatus === "duplicate") {
+        setLoading(false);
+        setThankyoumsg("");
+        setButtonText("You have already submitted this form.");
+        setButtonClass("");
+      } else {
+        setLoading(false);
+        setThankyoumsg("");
+        setButtonText("Something went wrong. Sorry!");
+        setButtonClass("");
       }
-
-      history.push("/thankyou");
-      resetFormState();
     } catch (err) {
       console.error("Submission error:", err);
       setLoading(false);

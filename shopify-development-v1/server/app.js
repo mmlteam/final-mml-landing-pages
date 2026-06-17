@@ -96,18 +96,27 @@ const mailOption = {
       console.error("Email error:", emailError.message);
     }
 
+    let sheetStatus = "error";
+    let sheetPayload = null;
+
     // Google Sheet me append karo
     try {
-      await axios.post(GOOGLE_SHEET_URL, {
+      const sheetResponse = await axios.post(GOOGLE_SHEET_URL, {
         ...sheetData,
         emailStatus: emailStatus,
       });
-      console.log("Sheet updated ✅");
+      sheetPayload = sheetResponse.data;
+      sheetStatus = sheetPayload?.status || "success";
+      console.log("Google Sheet response:", sheetStatus);
     } catch (sheetError) {
       console.error("Google Sheet error:", sheetError.message);
     }
 
-    res.json({ status: true, payload: "Done" });
+    res.json({
+      status: sheetStatus === "success",
+      sheetStatus: sheetStatus,
+      payload: sheetPayload || "Done",
+    });
   } catch (error) {
     console.error(error.message);
     res.json({

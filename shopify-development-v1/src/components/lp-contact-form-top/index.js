@@ -167,8 +167,10 @@ const LandingContactForm = () => {
         }),
       ]);
 
+      const sheetStatus = response1.data?.sheetStatus;
+
       // --- MODIFIED SECTION START ---
-      if (response1.status === 200 || response1.status === "success") {
+      if (sheetStatus === "success") {
         // 1. Push to DataLayer Immediately
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
@@ -185,6 +187,12 @@ const LandingContactForm = () => {
         history.push("/thankyou");
       }
       // --- MODIFIED SECTION END ---
+      else if (sheetStatus === "duplicate") {
+        setLoader(false);
+        setThankyoumsg("");
+        setButtonText("You have already submitted this form.");
+        setButtonClass("");
+      }
       else {
         setLoader(false);
         setThankyoumsg("");

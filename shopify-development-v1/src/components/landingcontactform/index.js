@@ -160,8 +160,9 @@ const LandingContactForm = () => {
         }),
       ]);
 
-      // Check for a successful status (usually 200)
-      if (response1.status === 200 || response1.status === "success") {
+      const sheetStatus = response1.data?.sheetStatus;
+
+      if (sheetStatus === "success") {
         // --- DATA LAYER PUSH START ---
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
@@ -178,6 +179,11 @@ const LandingContactForm = () => {
         setButtonClass("sent-msg");
         resetForm();
         history.push("/thankyou");
+      } else if (sheetStatus === "duplicate") {
+        setLoader(false);
+        setThankyoumsg("");
+        setButtonText("You have already submitted this form.");
+        setButtonClass("");
       } else {
         setLoader(false);
         setThankyoumsg("");
