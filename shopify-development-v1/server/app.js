@@ -38,7 +38,7 @@ app.use(morgan("tiny"));
 app.post("/sendmail", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
 
-  const { fname, email, phone, message, page, moreInfo, recaptchaToken } = req.body.data;
+  const { fname, email, phone, message, page, moreInfo, source, recaptchaToken } = req.body.data;
   console.log("Form received:", { fname, phone, page, recaptchaToken: !!recaptchaToken });
 
   const htmlEmail = `
@@ -83,6 +83,7 @@ const mailOption = {
     city: locationMatch ? locationMatch[1].trim() : "N/A",
     ip: ipMatch ? ipMatch[1].trim() : "N/A",
     device: deviceMatch ? deviceMatch[1].trim() : "N/A",
+    source: source || "Direct",
   };
 
   try {

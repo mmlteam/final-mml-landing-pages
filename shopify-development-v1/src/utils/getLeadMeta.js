@@ -35,5 +35,31 @@ deviceName = matched.length > 2 ? matched : "Android Device";
   else if (/Macintosh/.test(ua)) deviceName = "Mac";
   else if (/Linux/.test(ua)) deviceName = "Linux PC";
 
-  return { ip, country, city, date, time, deviceType, deviceName };
+  const source = getLeadSource();
+
+  return { ip, country, city, date, time, deviceType, deviceName, source };
+};
+
+const getLeadSource = () => {
+  if (typeof window === "undefined") return "Direct";
+
+  const params = new URLSearchParams(window.location.search);
+  const storedSource = window.sessionStorage.getItem("lead_source");
+
+  let source = params.get("utm_source");
+
+  if (!source && params.get("gclid")) {
+    source = "Google Ads";
+  }
+
+  if (!source && params.get("fbclid")) {
+    source = "Facebook";
+  }
+
+  if (source) {
+    window.sessionStorage.setItem("lead_source", source);
+    return source;
+  }
+
+  return storedSource || "Direct";
 };
