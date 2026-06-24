@@ -39,6 +39,7 @@ app.post("/sendmail", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
 
   const { fname, email, phone, message, page, moreInfo, source, recaptchaToken } = req.body.data;
+  const leadSource = source || "Direct";
   console.log("Form received:", { fname, phone, page, recaptchaToken: !!recaptchaToken });
 
   const htmlEmail = `
@@ -46,6 +47,7 @@ app.post("/sendmail", async (req, res) => {
     <p><b>Name:</b> ${fname}</p>
     <p><b>Email:</b> ${email}</p>
     <p><b>Phone:</b> ${phone}</p>
+    <p><b>Source:</b> ${leadSource}</p>
     <p><b>Message:</b> ${message}</p>
     <p><b>More Info:</b> ${moreInfo || "N/A"}</p>
   `;
@@ -61,7 +63,7 @@ const mailOption = {
   ],
   cc: "",
   subject: `New Lead Enquiry - ${page || "Website"}`,
-  text: `Name: ${fname}, Phone: ${phone}, Email: ${email}, Message: ${message}`,
+  text: `Name: ${fname}, Phone: ${phone}, Email: ${email}, Source: ${leadSource}, Message: ${message}`,
   html: htmlEmail,
 };
 
@@ -83,7 +85,7 @@ const mailOption = {
     city: locationMatch ? locationMatch[1].trim() : "N/A",
     ip: ipMatch ? ipMatch[1].trim() : "N/A",
     device: deviceMatch ? deviceMatch[1].trim() : "N/A",
-    source: source || "Direct",
+    source: leadSource,
   };
 
   try {

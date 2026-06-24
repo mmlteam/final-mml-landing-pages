@@ -57,9 +57,40 @@ const getLeadSource = () => {
   }
 
   if (source) {
-    window.sessionStorage.setItem("lead_source", source);
-    return source;
+    const readableSource = formatLeadSource(source);
+    window.sessionStorage.setItem("lead_source", readableSource);
+    return readableSource;
   }
 
   return storedSource || "Direct";
+};
+
+const formatLeadSource = source => {
+  const normalizedSource = String(source || "").trim().toLowerCase();
+  const sourceMap = {
+    fb: "Facebook",
+    facebook: "Facebook",
+    meta: "Meta",
+    ig: "Instagram",
+    instagram: "Instagram",
+    google: "Google Ads",
+    google_ads: "Google Ads",
+    googleads: "Google Ads",
+    adwords: "Google Ads",
+    linkedin: "LinkedIn",
+    li: "LinkedIn",
+    youtube: "YouTube",
+    yt: "YouTube",
+    direct: "Direct"
+  };
+
+  if (sourceMap[normalizedSource]) {
+    return sourceMap[normalizedSource];
+  }
+
+  return normalizedSource
+    .split(/[\s_-]+/)
+    .filter(Boolean)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ") || "Direct";
 };
