@@ -82,37 +82,20 @@ const AuditPopupForm = ({ onSuccess }) => {
       setButtonText("Submitting...");
       setButtonClass("loading");
       const meta = await getLeadMeta();
-      // We use axios.all to send to both your mailer and your database API
-      const [response1] = await axios.all([
-        axios.post("/sendmail", {
-          timeout: 2000,
-          data: {
-            fname: name,
-            email: "",
-            message: "Audit popup lead",
-            phone: phone,
-            checkbox: false,
-            page: "audit-popup (Landing Page)",
-            budget: "N/A",
-            source: meta.source,
-            moreInfo: `IP: ${meta.ip} | Location: ${meta.city}, ${meta.country} | Date: ${meta.date} | Time: ${meta.time} IST | Device: ${meta.deviceName} (${meta.deviceType})`,
-          },
-        }),
-        // Optional: Adding your database API call to match landing/footer forms
-        axios.post(
-          "https://api.mmlprojects.in/formdata.php",
-          {
-            fname: name,
-            phone: phone,
-            page: "audit-popup (Landing Page)",
-            message: "Audit popup lead",
-            source: meta.source,
-          },
-          {
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          },
-        ),
-      ]);
+      const response1 = await axios.post("/sendmail", {
+        timeout: 2000,
+        data: {
+          fname: name,
+          email: "",
+          message: "Audit popup lead",
+          phone: phone,
+          checkbox: false,
+          page: "audit-popup (Landing Page)",
+          budget: "N/A",
+          source: meta.source,
+          moreInfo: `IP: ${meta.ip} | Location: ${meta.city}, ${meta.country} | Date: ${meta.date} | Time: ${meta.time} IST | Device: ${meta.deviceName} (${meta.deviceType})`,
+        },
+      });
 
       const sheetStatus = response1.data?.sheetStatus;
 

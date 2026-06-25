@@ -146,20 +146,13 @@ const LandingContactForm = () => {
         moreInfo: `IP: ${meta.ip} | Location: ${meta.city}, ${meta.country} | Date: ${meta.date} | Time: ${meta.time} IST | Device: ${meta.deviceName} (${meta.deviceType})`,
       };
 
-      const [response1, response2] = await axios.all([
-        axios.post("/sendmail", {
-          timeout: 2000,
-          data: {
-            ...data,
-            checkbox: false,
-          },
-        }),
-        axios.post("https://api.mmlprojects.in/formdata.php", data, {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }),
-      ]);
+      const response1 = await axios.post("/sendmail", {
+        timeout: 2000,
+        data: {
+          ...data,
+          checkbox: false,
+        },
+      });
 
       const sheetStatus = response1.data?.sheetStatus;
 
