@@ -12,6 +12,19 @@ const axios = require("axios");
 
 const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbxxQH1c_hJlE7VMhPlp4-s-HtafAGH7OuYYppqePu5Ch0g7yfE75lHjkDV7XamunQhuhA/exec";
 
+const updateSheetEmailStatus = async ({ rowNumber, phone, emailStatus }) => {
+  try {
+    await axios.post(GOOGLE_SHEET_URL, {
+      action: "updateEmailStatus",
+      rowNumber,
+      phone,
+      emailStatus,
+    });
+  } catch (statusError) {
+    console.error("Email status update error:", statusError.message);
+  }
+};
+
 const { PUBLIC_URL = "" } = process.env;
 export const app = express();
 
@@ -89,16 +102,6 @@ const mailOption = {
   };
 
   try {
-    let emailStatus = "Unsent";
-
-    try {
-      const result = await sendEmail(mailOption);
-      emailStatus = "Sent";
-      console.log("Email sent:", result);
-    } catch (emailError) {
-      console.error("Email error:", emailError.message);
-    }
-
     let sheetStatus = "error";
     let sheetPayload = null;
 
@@ -106,7 +109,7 @@ const mailOption = {
     try {
       const sheetResponse = await axios.post(GOOGLE_SHEET_URL, {
         ...sheetData,
-        emailStatus: emailStatus,
+        emailStatus: "Pending",
       });
       sheetPayload = sheetResponse.data;
       sheetStatus = sheetPayload?.status || "success";
@@ -120,6 +123,26 @@ const mailOption = {
       sheetStatus: sheetStatus,
       payload: sheetPayload || "Done",
     });
+
+    if (sheetStatus === "success") {
+      sendEmail(mailOption)
+        .then(result => {
+          console.log("Email sent:", result);
+          return updateSheetEmailStatus({
+            rowNumber: sheetPayload?.rowNumber,
+            phone,
+            emailStatus: "Sent",
+          });
+        })
+        .catch(emailError => {
+          console.error("Email error:", emailError.message);
+          return updateSheetEmailStatus({
+            rowNumber: sheetPayload?.rowNumber,
+            phone,
+            emailStatus: "Unsent",
+          });
+        });
+    }
   } catch (error) {
     console.error(error.message);
     res.json({

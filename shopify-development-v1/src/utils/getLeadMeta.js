@@ -1,14 +1,21 @@
 export const getLeadMeta = async () => {
   // IP + Location (free, no API key needed)
   let ip = "N/A", country = "N/A", city = "N/A";
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 1500);
+
   try {
-    const res = await fetch("https://ipapi.co/json/");
+    const res = await fetch("https://ipapi.co/json/", {
+      signal: controller.signal
+    });
     const data = await res.json();
     ip = data.ip || "N/A";
     country = data.country_name || "N/A";
     city = data.city || "N/A";
   } catch (e) {
     console.warn("Could not fetch IP/location", e);
+  } finally {
+    clearTimeout(timeoutId);
   }
 
   // IST Date & Time

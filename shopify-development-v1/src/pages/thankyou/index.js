@@ -10,6 +10,8 @@ const Thankyou = () => {
   let history = useHistory();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     const timer = setTimeout(() => {
       history.push("/");
     }, 10000);

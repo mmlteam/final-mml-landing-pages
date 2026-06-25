@@ -7,6 +7,9 @@ const sendEmail = async (mailObj) => {
   host: "smtp.gmail.com",
   port: 587,
   secure: false,
+  connectionTimeout: 5000,
+  greetingTimeout: 5000,
+  socketTimeout: 7000,
   auth: {
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_APP_PASSWORD,
