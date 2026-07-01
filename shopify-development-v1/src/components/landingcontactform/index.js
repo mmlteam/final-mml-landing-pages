@@ -4,10 +4,14 @@ import FormField from "./FormField";
 import axios from "axios";
 import "./contactform.scss";
 import { getLeadMeta } from "../../utils/getLeadMeta";
+
+const indianMobileRule = /^[6-9]\d{9}$/;
+
 const LandingContactForm = () => {
   const [firstName, setFirstName] = useState("");
   const [budget, setBudget] = useState("");
   const [phone, setPhone] = useState("");
+  const [website, setWebsite] = useState("");
 
   const [loader, setLoader] = useState(false);
   const [thankyoumsg, setThankyoumsg] = useState("");
@@ -64,14 +68,13 @@ const LandingContactForm = () => {
   const validateUserPhone = (value) => {
     const errorMsgCaret = { ...errorMsg };
     const cleanedValue = String(value).trim();
-    const rule = /^\d{10,15}$/;
 
     if (cleanedValue.length === 0) {
       setPhoneValidate(true);
       errorMsgCaret.phone = "Please enter your contact number";
-    } else if (!rule.test(cleanedValue)) {
+    } else if (!indianMobileRule.test(cleanedValue)) {
       setPhoneValidate(true);
-      errorMsgCaret.phone = "Please enter a valid contact number";
+      errorMsgCaret.phone = "Enter a valid 10 digit Indian mobile number";
     } else {
       setPhoneValidate(false);
       errorMsgCaret.phone = "";
@@ -91,14 +94,16 @@ const LandingContactForm = () => {
   };
 
   const updateUserPhone = (value) => {
-    setPhone(value);
-    validateUserPhone(value);
+    const cleanedValue = String(value).replace(/\D/g, "").slice(0, 10);
+    setPhone(cleanedValue);
+    validateUserPhone(cleanedValue);
   };
 
   const resetForm = () => {
     setFirstName("");
     setBudget("");
     setPhone("");
+    setWebsite("");
     setFnameValidate(false);
     setPhoneValidate(false);
     setBudgetValidate(false);
@@ -140,6 +145,7 @@ const LandingContactForm = () => {
         email: "",
         message: `Budget: ${budget}`,
         phone: phone,
+        website: website,
         page: "Get Started (Footer Form)",
         budget: budget,
         source: meta.source,
@@ -215,15 +221,31 @@ const LandingContactForm = () => {
           <div className="error">{errorMsg.fname}</div>
         )}
 
+        <div className="honeypot-field" aria-hidden="true">
+          <label htmlFor="footer-website">Website</label>
+          <input
+            id="footer-website"
+            name="website"
+            type="text"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            tabIndex="-1"
+            autoComplete="off"
+          />
+        </div>
+
         <FormField
           label="Your Contact Number *"
           value={phone}
           fieldName="phone"
-          type="number"
+          type="tel"
           className="field"
           placeholder="Enter your contact number"
           fieldFn={updateUserPhone}
           textAreaField={false}
+          inputMode="numeric"
+          maxLength="10"
+          pattern="[6-9][0-9]{9}"
         />
         {phoneValidate && errorMsg.phone && (
           <div className="error">{errorMsg.phone}</div>

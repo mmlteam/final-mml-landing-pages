@@ -37,6 +37,11 @@ label.label {
   line-height: 1;
   margin-bottom: 1em;
 }
+
+.honeypot-field {
+  display: none;
+}
+
 button {
   &.submit-button {
     font-size: 12px;

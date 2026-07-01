@@ -42,6 +42,10 @@ label.label {
   margin-bottom: 1em;
 }
 
+.honeypot-field {
+  display: none;
+}
+
 select.field.selected-field {
   text-align: left;
   text-align-last: left;

@@ -11,6 +11,9 @@ const FormField = ({
   selectField,
   options = [],
   fieldFn,
+  inputMode,
+  maxLength,
+  pattern,
 }) => {
   const handleField = (inputValue) => {
     fieldFn(inputValue);
@@ -29,6 +32,9 @@ const FormField = ({
           type={type}
           className={className}
           placeholder={placeholder}
+          inputMode={inputMode}
+          maxLength={maxLength}
+          pattern={pattern}
         />
       )}
 

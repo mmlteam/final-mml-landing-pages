@@ -4,9 +4,13 @@ import FormField from "./FormField";
 import axios from "axios";
 import "./audit-popup-form.scss";
 import { getLeadMeta } from "../../utils/getLeadMeta";
+
+const indianMobileRule = /^[6-9]\d{9}$/;
+
 const AuditPopupForm = ({ onSuccess }) => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [website, setWebsite] = useState("");
 
   const [nameError, setNameError] = useState("");
   const [phoneError, setPhoneError] = useState("");
@@ -35,8 +39,7 @@ const AuditPopupForm = ({ onSuccess }) => {
   };
 
   const validatePhone = (value) => {
-    const cleanedValue = String(value).trim();
-    const rule = /^\d{10}$/;
+    const cleanedValue = String(value).replace(/\D/g, "").slice(0, 10);
 
     setPhone(cleanedValue);
 
@@ -45,8 +48,8 @@ const AuditPopupForm = ({ onSuccess }) => {
       return false;
     }
 
-    if (!rule.test(cleanedValue)) {
-      setPhoneError("Enter valid 10 digit number");
+    if (!indianMobileRule.test(cleanedValue)) {
+      setPhoneError("Enter a valid 10 digit Indian mobile number");
       return false;
     }
 
@@ -56,7 +59,7 @@ const AuditPopupForm = ({ onSuccess }) => {
 
   useEffect(() => {
     const isNameValid = name.trim().length > 0;
-    const isPhoneValid = /^\d{10}$/.test(String(phone).trim());
+    const isPhoneValid = indianMobileRule.test(String(phone).trim());
 
     setFormInvalid(!(isNameValid && isPhoneValid));
   }, [name, phone]);
@@ -89,6 +92,7 @@ const AuditPopupForm = ({ onSuccess }) => {
           email: "",
           message: "Audit popup lead",
           phone: phone,
+          website: website,
           checkbox: false,
           page: "audit-popup (Landing Page)",
           budget: "N/A",
@@ -118,6 +122,7 @@ const AuditPopupForm = ({ onSuccess }) => {
 
         setName("");
         setPhone("");
+        setWebsite("");
         setNameError("");
         setPhoneError("");
 
@@ -163,6 +168,19 @@ const AuditPopupForm = ({ onSuccess }) => {
       />
       {nameError && <div className="error">{nameError}</div>}
 
+      <div className="honeypot-field" aria-hidden="true">
+        <label htmlFor="popup-website">Website</label>
+        <input
+          id="popup-website"
+          name="website"
+          type="text"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+          tabIndex="-1"
+          autoComplete="off"
+        />
+      </div>
+
       <FormField
         label="Your Contact Number *"
         value={phone}
@@ -171,6 +189,9 @@ const AuditPopupForm = ({ onSuccess }) => {
         className={`field field--compact ${phoneError ? "field-error" : ""}`}
         placeholder="Enter your contact number"
         fieldFn={validatePhone}
+        inputMode="numeric"
+        maxLength="10"
+        pattern="[6-9][0-9]{9}"
       />
       {phoneError && <div className="error">{phoneError}</div>}
 

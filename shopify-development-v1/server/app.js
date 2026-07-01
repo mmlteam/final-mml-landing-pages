@@ -11,6 +11,7 @@ const sgMail = require("@sendgrid/mail");
 const axios = require("axios");
 
 const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbxxQH1c_hJlE7VMhPlp4-s-HtafAGH7OuYYppqePu5Ch0g7yfE75lHjkDV7XamunQhuhA/exec";
+const indianMobileRule = /^[6-9]\d{9}$/;
 
 const updateSheetEmailStatus = async ({ rowNumber, phone, emailStatus }) => {
   try {
@@ -51,15 +52,34 @@ app.use(morgan("tiny"));
 app.post("/sendmail", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
 
-  const { fname, email, phone, message, page, moreInfo, source, recaptchaToken } = req.body.data;
+  const { fname, email, phone, message, page, moreInfo, source, recaptchaToken, website } = req.body.data;
+  const honeypotValue = String(website || "").trim();
+  const cleanedPhone = String(phone || "").trim();
+
+  if (honeypotValue.length > 0) {
+    return res.status(400).json({
+      status: false,
+      sheetStatus: "spam",
+      payload: "Spam submission rejected.",
+    });
+  }
+
+  if (!indianMobileRule.test(cleanedPhone)) {
+    return res.status(400).json({
+      status: false,
+      sheetStatus: "invalid_phone",
+      payload: "Please enter a valid 10 digit Indian mobile number.",
+    });
+  }
+
   const leadSource = source || "Direct";
-  console.log("Form received:", { fname, phone, page, recaptchaToken: !!recaptchaToken });
+  console.log("Form received:", { fname, phone: cleanedPhone, page, recaptchaToken: !!recaptchaToken });
 
   const htmlEmail = `
     <h3>New Lead from: ${page || "Website"}</h3>
     <p><b>Name:</b> ${fname}</p>
     <p><b>Email:</b> ${email}</p>
-    <p><b>Phone:</b> ${phone}</p>
+    <p><b>Phone:</b> ${cleanedPhone}</p>
     <p><b>Source:</b> ${leadSource}</p>
     <p><b>Message:</b> ${message}</p>
     <p><b>More Info:</b> ${moreInfo || "N/A"}</p>
@@ -76,7 +96,7 @@ const mailOption = {
   ],
   cc: "",
   subject: `New Lead Enquiry - ${page || "Website"}`,
-  text: `Name: ${fname}, Phone: ${phone}, Email: ${email}, Source: ${leadSource}, Message: ${message}`,
+  text: `Name: ${fname}, Phone: ${cleanedPhone}, Email: ${email}, Source: ${leadSource}, Message: ${message}`,
   html: htmlEmail,
 };
 
@@ -89,7 +109,7 @@ const mailOption = {
 
   const sheetData = {
     name: fname,
-    phone: phone,
+    phone: cleanedPhone,
     budget: message,
     formName: page,
     date: dateMatch ? dateMatch[1].trim() : "N/A",
@@ -130,7 +150,7 @@ const mailOption = {
           console.log("Email sent:", result);
           return updateSheetEmailStatus({
             rowNumber: sheetPayload?.rowNumber,
-            phone,
+            phone: cleanedPhone,
             emailStatus: "Sent",
           });
         })
@@ -138,7 +158,7 @@ const mailOption = {
           console.error("Email error:", emailError.message);
           return updateSheetEmailStatus({
             rowNumber: sheetPayload?.rowNumber,
-            phone,
+            phone: cleanedPhone,
             emailStatus: "Unsent",
           });
         });
